@@ -17,9 +17,10 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserMapper userMapper;
     public RegisterResponse register(CreateUserRequest createUserRequest) {
-        var user = userMapper.dtoToUser(createUserRequest);
+        String password = passwordEncoder.encode(createUserRequest.getUserDto().getPassword());
+        var user = UserMapper.mapToUser(createUserRequest.getUserDto());
+        user.setPassword(password);
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return RegisterResponse.builder()

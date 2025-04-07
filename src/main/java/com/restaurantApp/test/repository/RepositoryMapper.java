@@ -12,4 +12,11 @@ public class RepositoryMapper {
                 .address(createRepositoryRequest.getRepositoryDto().getAddress())
                 .build();
     }
+    public static Repository mapToRepository(RepositoryDto repositoryDto){
+        return  Repository.builder()
+                .id(repositoryDto.getId())
+                .name(repositoryDto.getName())
+                .address(repositoryDto.getAddress())
+                .build();
+    }
 }

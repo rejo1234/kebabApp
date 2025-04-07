@@ -24,8 +24,8 @@ public class Product {
     @Id
     @GeneratedValue
     private Integer id;
-    private String nameProduct;
-    private Double kgs;
+    private String name;
+    private Double weight;
     @ManyToMany(mappedBy = "productListRestaurant")
     @JsonManagedReference
     private List<Restaurant> productListRestaurant = new ArrayList<>();

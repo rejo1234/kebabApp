@@ -4,6 +4,8 @@ import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
+import com.restaurantApp.test.user.User;
+import com.restaurantApp.test.user.UserRestaurantRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,27 @@ public class RestaurantService {
     private final RepositoryRepository repositoryRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
+
+    public void deleteConnectionRestaurantAndRepository(RestaurantRepositoryRequest userRestaurantRequest){
+        Repository repository = repositoryRepository.findById(userRestaurantRequest.getIdRepository())
+                .orElseThrow(() -> new RuntimeException("Repository nie znaleziony"));
+
+        Restaurant restaurant = restaurantRepository.findById(userRestaurantRequest.getIdRestaurant())
+                .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
+
+        restaurant.getRepositoryList().remove(repository);
+        restaurantRepository.save(restaurant);
+    }
+    public void deleteConnectionRestaurantAndProduct(RestaurantProductRequest restaurantProductRequest){
+        Product product = productRepository.findById(restaurantProductRequest.getIdProduct())
+                .orElseThrow(() -> new RuntimeException("Product nie znaleziony"));
+
+        Restaurant restaurant = restaurantRepository.findById(restaurantProductRequest.getIdRestaurant())
+                .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
+
+        restaurant.getProductListRestaurant().remove(product);
+        restaurantRepository.save(restaurant);
+    }
     public void connectRepositoryToRestaurant(RestaurantRepositoryRequest restaurantRepositoryRequest) {
         Restaurant restaurant = restaurantRepository.findById(restaurantRepositoryRequest.getIdRestaurant())
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
