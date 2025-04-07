@@ -8,6 +8,7 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+
     public void deleteProduct(int productId) {
         var product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Produkt nie istnieje"));
@@ -17,10 +18,10 @@ public class ProductService {
     }
     public void updateProduct(CreateProductRequest createProductRequest) {
         var product = productRepository.findById(createProductRequest.getProductDto().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Repozytorium nie istnieje"));
+                .orElseThrow(() -> new IllegalArgumentException("Product nie istnieje"));
         //czemu tutaj nie używam mappera??
-        product.setNameProduct(createProductRequest.getProductDto().getNameProduct());
-        product.setKgs(createProductRequest.getProductDto().getWeightProduct());
+        product.setName(createProductRequest.getProductDto().getName());
+        product.setWeight(createProductRequest.getProductDto().getWeight());
         productRepository.save(product);
     }
     public void createProduct(CreateProductRequest createProductRequest){
@@ -29,9 +30,9 @@ public class ProductService {
         productRepository.save(product);
     }
     public Product findProduct(String string){
-        return productRepository.findByNameProduct(string);
+        return productRepository.findByName(string);
     }
     public List<Product> availableProducts(){
-        return productRepository.findByKgsGreaterThan(0);
+        return productRepository.findByWeightGreaterThan(0);
     }
 }

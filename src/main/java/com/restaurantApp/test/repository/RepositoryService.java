@@ -5,6 +5,7 @@ import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.restaurant.CreateRestaurantRequest;
 import com.restaurantApp.test.restaurant.Restaurant;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
+import com.restaurantApp.test.restaurant.RestaurantRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,12 +22,22 @@ public class RepositoryService {
     private final RestaurantRepository restaurantRepository;
     private final ProductRepository productRepository;
     private final RepositoryMapper repositoryMapper;
-    public void updateRepository(CreateRepositoryRequest createRepositoryRequest) {
-        var repository = repositoryRepository.findById(createRepositoryRequest.getRepositoryDto().getId())
+    public void deleteConnectionRepositoryAndProduct(RepositoryProductRequest repositoryProductRequest){
+        Repository repository = repositoryRepository.findById(repositoryProductRequest.getIdRepository())
+                .orElseThrow(() -> new RuntimeException("Repository nie znaleziony"));
+
+        Product product = productRepository.findById(repositoryProductRequest.getIdProduct())
+                .orElseThrow(() -> new RuntimeException("Product nie znaleziono"));
+
+        repository.getProductListRepository().remove(product);
+        repositoryRepository.save(repository);
+    }
+    public void updateRepository(RepositoryDto repositoryDto) {
+        var repository = repositoryRepository.findById(repositoryDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Repozytorium nie istnieje"));
         //czemu tutaj nie używam mappera??
-        repository.setName(createRepositoryRequest.getRepositoryDto().getName());
-        repository.setAddress(createRepositoryRequest.getRepositoryDto().getAddress());
+
+        repository = RepositoryMapper.mapToRepository(repositoryDto);
         repositoryRepository.save(repository);
     }
     public void deleteRepository(int repositoryId) {

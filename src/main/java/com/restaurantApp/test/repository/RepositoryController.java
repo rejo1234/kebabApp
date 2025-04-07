@@ -2,6 +2,7 @@ package com.restaurantApp.test.repository;
 
 import com.restaurantApp.test.restaurant.CreateRestaurantRequest;
 import com.restaurantApp.test.restaurant.Restaurant;
+import com.restaurantApp.test.restaurant.RestaurantRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RepositoryController {
     private final RepositoryService repositoryService;
+    @DeleteMapping("deleteConnectionRepositoryAndProduct")
+    public ResponseEntity<Void> deleteConnectionRepositoryAndProduct(
+            @RequestBody RepositoryProductRequest repositoryProductRequest
+    ) {
+        repositoryService.deleteConnectionRepositoryAndProduct(repositoryProductRequest);
+        return ResponseEntity.ok().build();
+    }
     @DeleteMapping("/deleteRepository")
     public ResponseEntity<Void> deleteRepository(
             @RequestParam int repositoryId
@@ -40,7 +48,7 @@ public class RepositoryController {
             //ogarnac dlaczego mam tutaj restaurantRequestDto i zamienic na createRestaurantRequest
             @RequestBody CreateRepositoryRequest createRepositoryRequest
     ) {
-        repositoryService.updateRepository(createRepositoryRequest);
+        repositoryService.updateRepository(createRepositoryRequest.getRepositoryDto());
         return ResponseEntity.ok().build();
     }
     @GetMapping("/getRepositoriesConnectedToOneRestaurant")

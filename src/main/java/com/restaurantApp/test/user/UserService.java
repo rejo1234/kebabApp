@@ -1,14 +1,10 @@
 package com.restaurantApp.test.user;
 
 import com.restaurantApp.test.auth.CreateUserRequest;
-import com.restaurantApp.test.product.CreateProductRequest;
-import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.repository.RepositoryService;
 import com.restaurantApp.test.restaurant.Restaurant;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
-import com.restaurantApp.test.restaurant.RestaurantRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +14,27 @@ public class UserService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final RepositoryRepository repositoryRepository;
+    public void deleteConnectionUserAndRestaurant(UserRestaurantRequest userRestaurantRequest){
+        User user = userRepository.findById(userRestaurantRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
+
+        Restaurant restaurant = restaurantRepository.findById(userRestaurantRequest.getRestaurantId())
+                .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
+
+        user.getUserListRestaurant().remove(restaurant);
+        userRepository.save(user);
+    }
+
+    public void deleteConnectionUserAndRepository(UserRepositoryRequest userRepositoryRequest){
+        User user = userRepository.findById(userRepositoryRequest.getRepositoryId())
+                .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
+
+        Repository repository = repositoryRepository.findById(userRepositoryRequest.getRepositoryId())
+                .orElseThrow(() -> new RuntimeException("Repository nie znaleziono"));
+
+        user.getUserListRepository().remove(repository);
+        userRepository.save(user);
+    }
 
     public void deleteUser(int userId) {
         var user = userRepository.findById(userId)

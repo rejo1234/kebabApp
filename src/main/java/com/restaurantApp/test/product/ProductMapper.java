@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class ProductMapper {
     public Product dtoToProduct(CreateProductRequest createProductRequest){
         return  Product.builder()
-                .nameProduct(createProductRequest.getProductDto().getNameProduct())
-                .kgs(createProductRequest.getProductDto().getWeightProduct())
+                .name(createProductRequest.getProductDto().getName())
+                .weight(createProductRequest.getProductDto().getWeight())
                 .build();
     }
 }

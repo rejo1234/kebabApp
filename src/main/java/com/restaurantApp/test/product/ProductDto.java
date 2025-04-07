@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDto {
     private Integer id;
-    private String nameProduct;
-    private Double weightProduct;
+    private String name;
+    private Double weight;
 }
