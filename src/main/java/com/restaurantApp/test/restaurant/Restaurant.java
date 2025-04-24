@@ -2,7 +2,6 @@ package com.restaurantApp.test.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.user.User;
 import jakarta.persistence.Entity;
@@ -14,9 +13,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -33,24 +30,14 @@ public class Restaurant {
     private String address;
     @ManyToMany
     @JoinTable(
-            name = "restaurant_product",
-            joinColumns = @JoinColumn(name = "restaurant_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    //111
-    @JsonBackReference
-    private List<Product> productListRestaurant = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
             name = "restaurant_repository",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "repository_id")
     )
-    @JsonBackReference
+    @JsonBackReference(value = "restaurant-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "userListRestaurant")
-    @JsonManagedReference
-    private List<User> restaurantListUser = new ArrayList<>();
+    @ManyToMany(mappedBy = "restaurantList")
+    @JsonManagedReference(value = "user-restaurant")
+    private List<User> userList = new ArrayList<>();
 }

@@ -1,15 +1,28 @@
 package com.restaurantApp.test.product;
 
-import com.restaurantApp.test.repository.CreateRepositoryRequest;
 import com.restaurantApp.test.repository.Repository;
+import com.restaurantApp.test.repository.RepositoryRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+@AllArgsConstructor
 public class ProductMapper {
-    public Product dtoToProduct(CreateProductRequest createProductRequest){
-        return  Product.builder()
-                .name(createProductRequest.getProductDto().getName())
-                .weight(createProductRequest.getProductDto().getWeight())
+    RepositoryRepository repositoryRepository;
+
+
+    public Product dtoToProduct(ProductDto productDto) {
+        // productDto.getRepositoryId() to ma zero dlatego nie znajduje repository
+        Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
+                .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
+
+        return Product.builder()
+                .id(productDto.getId())
+                .name(productDto.getName())
+                .weight(productDto.getWeight())
+                .repository(repository)
                 .build();
     }
 }

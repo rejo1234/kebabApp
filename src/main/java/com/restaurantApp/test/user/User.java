@@ -1,7 +1,6 @@
 package com.restaurantApp.test.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.restaurant.Restaurant;
 import jakarta.persistence.*;
@@ -32,23 +31,26 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_restaurant",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "restaurant_id")
     )
-    @JsonBackReference
-    private List<Restaurant> userListRestaurant = new ArrayList<>();
-    //
+    @JsonBackReference(value = "user-restaurant")
+
+    private List<Restaurant> restaurantList = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "user_repository",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "repository_id")
     )
-    @JsonBackReference
-    private List<Repository> userListRepository = new ArrayList<>();
+    @JsonBackReference(value = "user-repository")
+    private List<Repository> repositoryList = new ArrayList<>();
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,12 +1,14 @@
 package com.restaurantApp.test.restaurant;
 
-import com.restaurantApp.test.product.Product;
-import com.restaurantApp.test.product.ProductRepository;
+import com.restaurantApp.test.auth.AuthenticateContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.user.User;
-import com.restaurantApp.test.user.UserRestaurantRequest;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.descriptor.web.ContextService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,88 +17,77 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class RestaurantService {
-    private final ProductRepository productRepository;
     private final RepositoryRepository repositoryRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
+    private final AuthenticateContextService authenticationContextService;
 
-    public void deleteConnectionRestaurantAndRepository(RestaurantRepositoryRequest userRestaurantRequest){
-        Repository repository = repositoryRepository.findById(userRestaurantRequest.getIdRepository())
+    public void deleteConnectionRestaurantAndRepository(RestaurantRepositoryRequest userRestaurantRequest, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
+        authenticationContextService.authenticateRestaurantList(userRestaurantRequest.getRestaurantId());
+        authenticationContextService.authenticateRepositoryList(userRestaurantRequest.getRepositoryId());
+        Repository repository = repositoryRepository.findById(userRestaurantRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("Repository nie znaleziony"));
 
-        Restaurant restaurant = restaurantRepository.findById(userRestaurantRequest.getIdRestaurant())
+        Restaurant restaurant = restaurantRepository.findById(userRestaurantRequest.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
 
         restaurant.getRepositoryList().remove(repository);
         restaurantRepository.save(restaurant);
     }
-    public void deleteConnectionRestaurantAndProduct(RestaurantProductRequest restaurantProductRequest){
-        Product product = productRepository.findById(restaurantProductRequest.getIdProduct())
-                .orElseThrow(() -> new RuntimeException("Product nie znaleziony"));
 
-        Restaurant restaurant = restaurantRepository.findById(restaurantProductRequest.getIdRestaurant())
-                .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
-
-        restaurant.getProductListRestaurant().remove(product);
-        restaurantRepository.save(restaurant);
-    }
-    public void connectRepositoryToRestaurant(RestaurantRepositoryRequest restaurantRepositoryRequest) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantRepositoryRequest.getIdRestaurant())
+    public void connectRepositoryToRestaurant(RestaurantRepositoryRequest restaurantRepositoryRequest, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
+        Restaurant restaurant = restaurantRepository.findById(restaurantRepositoryRequest.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-        Repository repository = repositoryRepository.findById(restaurantRepositoryRequest.getIdRepository())
+        Repository repository = repositoryRepository.findById(restaurantRepositoryRequest.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Repozytorium nie istnieje"));
 
         restaurant.getRepositoryList().add(repository);
         restaurantRepository.save(restaurant);
     }
 
-    public void connectProductToRestaurant(RestaurantProductRequest restaurantProductRequest) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantProductRequest.getIdRestaurant())
-                .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-        Product product = productRepository.findById(restaurantProductRequest.getIdProduct())
-                .orElseThrow(() -> new IllegalArgumentException("Produkt nie istnieje"));
-        restaurant.getProductListRestaurant().add(product);
-        restaurantRepository.save(restaurant);
-    }
 
-    public List<Restaurant> showRestaurantsConnectedToOneRepository(@RequestParam int id) {
-        Repository repository = repositoryRepository.findById(id)
+    public List<Restaurant> showRestaurantsConnectedToOneRepository(Integer repositoryId, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
+        Repository repository = repositoryRepository.findById(repositoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Repozytorium nie istnieje"));
-        return repository.getRestaurantsList();
+        return repository.getRestaurantList();
     }
 
-    public List<Restaurant> showAllRestaurants() {
+    public List<Restaurant> showAllRestaurants(Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
         return restaurantRepository.findAll();
     }
-public Restaurant getRestaurant(int id) {
-    return restaurantRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-}
-    public void createRestaurant(CreateRestaurantRequest createRestaurantRequest) {
-        //co trzyma tutaj createRestaurantRequest, trzyma wszystkie zmienne z table(w tym ID ale ID jest NULL)
 
-        //restaurant przyjumje zminen z funckji bez ID z funckji
-        //ogolnie jak nie podam nic to jest pusta kolumna
-        var restaurant = restaurantMapper.dtoToRestaurant(createRestaurantRequest);
-        // natomiast jeśli zrobie uzyje tej funckji to wstawia się null (nie wyciagam zmiennej adress w funckji)
-        // Jak skontrolowac requet zeby chcial tylko funkcje jakie chce, zamiast forcowac wszystkie zmienne zawsze?
-        var restaurant2 = restaurantMapper.dtoToRestaurantWithOutAddress(createRestaurantRequest);
-        restaurantRepository.save(restaurant);
-    }
-
-    public void updateRestaurant(CreateRestaurantRequest createRestaurantRequest) {
-        var restaurant = restaurantRepository.findById(createRestaurantRequest.getRestaurantDto().getId())
+    public Restaurant getRestaurant(Integer restaurantId, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
+        return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-        //czemu tutaj nie używam mappera??
-        restaurant.setName(createRestaurantRequest.getRestaurantDto().getName());
-        restaurant.setCity(createRestaurantRequest.getRestaurantDto().getCity());
-        restaurant.setAddress(createRestaurantRequest.getRestaurantDto().getAddress());
+    }
+
+    public void createRestaurant(RestaurantDto restaurantDto, Integer userId) {
+            authenticationContextService.authenticateUserId(userId);
+        var restaurant = restaurantMapper.dtoToRestaurant(restaurantDto);
         restaurantRepository.save(restaurant);
     }
-    public void deleteRestaurant(int restaurantId) {
+
+    public void updateRestaurant(RestaurantDto restaurantDto, Integer restaurantId, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
         var restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-        if (restaurant != null){
+        authenticationContextService.authenticateRestaurantList(restaurantId);
+        restaurant.setName(restaurantDto.getName());
+        restaurant.setCity(restaurantDto.getCity());
+        restaurant.setAddress(restaurantDto.getAddress());
+        restaurantRepository.save(restaurant);
+    }
+
+    public void deleteRestaurant(Integer restaurantId, Integer userId) {
+        authenticationContextService.authenticateUserId(userId);
+        var restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
+        if (restaurant != null) {
             restaurantRepository.deleteById(restaurantId);
         }
     }

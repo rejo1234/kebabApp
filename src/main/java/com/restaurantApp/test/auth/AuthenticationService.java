@@ -1,8 +1,6 @@
 package com.restaurantApp.test.auth;
 
 import com.restaurantApp.test.config.JwtService;
-import com.restaurantApp.test.user.Role;
-import com.restaurantApp.test.user.User;
 import com.restaurantApp.test.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,14 +15,16 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    public RegisterResponse register(CreateUserRequest createUserRequest) {
-        String password = passwordEncoder.encode(createUserRequest.getUserDto().getPassword());
-        var user = UserMapper.mapToUser(createUserRequest.getUserDto());
+    private final UserMapper userMapper;
+
+    public RegisterResponse register(UserDto userDto) {
+        String password = passwordEncoder.encode(userDto.getPassword());
+        var user = userMapper.dtoToUser(userDto);
         user.setPassword(password);
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return RegisterResponse.builder()
-               .token(jwtToken)
+                .token(jwtToken)
                 .build();
     }
 

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestaurantRepositoryRequest {
-    int idRestaurant;
-    int idRepository;
+    int restaurantId;
+    int repositoryId;
 }

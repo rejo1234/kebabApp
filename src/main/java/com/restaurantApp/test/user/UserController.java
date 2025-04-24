@@ -1,12 +1,8 @@
 package com.restaurantApp.test.user;
 
 import com.restaurantApp.test.auth.CreateUserRequest;
-import com.restaurantApp.test.product.CreateProductRequest;
-import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.restaurant.Restaurant;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
-import com.restaurantApp.test.restaurant.RestaurantRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final RepositoryRepository repositoryRepository;
-    private final RestaurantRepository restaurantRepository;
 
-    @DeleteMapping("/deleteUser")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(
             @RequestParam int userId
     ) {
@@ -28,43 +21,43 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/updateUser")
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateUser(
-            @RequestBody CreateUserRequest createUserRequest
+            @RequestBody CreateUserRequest createUserRequest, @RequestParam Integer userId
     ) {
-        userService.updateUser(createUserRequest);
+        userService.updateUser(createUserRequest, userId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/connectUserAndRestaurant")
+    @PostMapping("/connect-with-restaurant")
     public ResponseEntity<Void> connectUserAndRestaurant(
-            @RequestBody UserRestaurantRequest userRestaurantRequest
+            @RequestBody UserRestaurantRequest userRestaurantRequest, @RequestParam Integer userId
     ) {
-        userService.connectRestaurantToUser(userRestaurantRequest);
+        userService.connectRestaurantToUser(userRestaurantRequest, userId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/connectUserAndRepository")
+    @PostMapping("/connect-with-repository")
     public ResponseEntity<Void> connectUserAndRepository(
-            @RequestBody UserRepositoryRequest userRepositoryRequest
+            @RequestBody UserRepositoryRequest userRepositoryRequest, @RequestParam Integer userId
     ) {
-        userService.connectRepositoryToUser(userRepositoryRequest);
+        userService.connectRepositoryToUser(userRepositoryRequest, userId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("deleteConnectionUserAndRepository")
+    @DeleteMapping("delete-connection-with-repository")
     public ResponseEntity<Void> deleteConnectionUserAndRepository(
-            @RequestBody UserRepositoryRequest userRepositoryRequest
+            @RequestBody UserRepositoryRequest userRepositoryRequest, @RequestParam Integer userId
     ) {
-        userService.deleteConnectionUserAndRepository(userRepositoryRequest);
+        userService.deleteConnectionUserAndRepository(userRepositoryRequest, userId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("deleteConnectionUserAndRestaurant")
+    @DeleteMapping("delete-connection-with-restaurant")
     public ResponseEntity<Void> deleteConnectionUserAndRestaurant(
-            @RequestBody UserRestaurantRequest userRestaurantRequest
+            @RequestBody UserRestaurantRequest userRestaurantRequest, @RequestParam Integer userId
     ) {
-        userService.deleteConnectionUserAndRestaurant(userRestaurantRequest);
+        userService.deleteConnectionUserAndRestaurant(userRestaurantRequest, userId);
         return ResponseEntity.ok().build();
     }
 }

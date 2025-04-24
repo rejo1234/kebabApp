@@ -1,10 +1,8 @@
 package com.restaurantApp.test.repository;
 
-import com.restaurantApp.test.restaurant.CreateRestaurantRequest;
-import com.restaurantApp.test.restaurant.Restaurant;
-import com.restaurantApp.test.restaurant.RestaurantRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,52 +13,61 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RepositoryController {
     private final RepositoryService repositoryService;
-    @DeleteMapping("deleteConnectionRepositoryAndProduct")
+
+    @DeleteMapping("deleteConnectionWithProduct")
     public ResponseEntity<Void> deleteConnectionRepositoryAndProduct(
-            @RequestBody RepositoryProductRequest repositoryProductRequest
+            @RequestBody RepositoryProductRequest repositoryProductRequest, @RequestParam Integer userId
     ) {
-        repositoryService.deleteConnectionRepositoryAndProduct(repositoryProductRequest);
+        repositoryService.deleteConnectionRepositoryAndProduct(repositoryProductRequest, userId);
         return ResponseEntity.ok().build();
     }
-    @DeleteMapping("/deleteRepository")
+
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteRepository(
-            @RequestParam int repositoryId
+            @RequestParam Integer repositoryId, @RequestParam Integer userId
     ) {
-        repositoryService.deleteRepository(repositoryId);
+        repositoryService.deleteRepository(repositoryId, userId);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/connectRepositoryAndProduct")
+
+    @PostMapping("/connect-with-product")
     public ResponseEntity<Void> connectRepositoryAndProduct(
-            @RequestBody RepositoryProductRequest repositoryProductRequest
+            @RequestBody RepositoryProductRequest repositoryProductRequest, @RequestParam Integer userId
     ) {
-        repositoryService.connectProductToRepository(repositoryProductRequest);
+        repositoryService.connectProductToRepository(repositoryProductRequest, userId);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/createRepository")
+
+    @PostMapping("/create")
     public ResponseEntity<Void> createRepository(
-            @RequestBody CreateRepositoryRequest createRepositoryRequest
+            @RequestBody CreateRepositoryRequest createRepositoryRequest, @RequestParam Integer userId
     ) {
-        repositoryService.createRepository(createRepositoryRequest);
+        repositoryService.createRepository(createRepositoryRequest.getRepositoryDto(), userId);
         return ResponseEntity.ok().build();
     }
-    @PatchMapping("/updateRestaurant")
+
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateRepository(
-            //ogarnac dlaczego mam tutaj restaurantRequestDto i zamienic na createRestaurantRequest
-            @RequestBody CreateRepositoryRequest createRepositoryRequest
+            @RequestBody CreateRepositoryRequest createRepositoryRequest, @RequestParam Integer userId
     ) {
-        repositoryService.updateRepository(createRepositoryRequest.getRepositoryDto());
+        repositoryService.updateRepository(createRepositoryRequest.getRepositoryDto(), userId);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/getRepositoriesConnectedToOneRestaurant")
-    public ResponseEntity<List<Repository>> showRepositoriesConnectedToOneRestaurant(@RequestParam int idRestaurant) {
-        return ResponseEntity.ok(repositoryService.showRepositoriesConnectedToOneRestaurant(idRestaurant));
+
+    @GetMapping("/get-all-connected-to-restaurant")
+    public ResponseEntity<List<Repository>> showRepositoriesConnectedToOneRestaurant(@RequestParam Integer restaurantId
+    ,Integer userId) {
+        return ResponseEntity.ok(repositoryService.getRepositoriesConnectedToOneRestaurant(restaurantId, userId));
     }
-    @GetMapping("/getRepositories")
-    public ResponseEntity<List<Repository>> showRepositories() {
-        return ResponseEntity.ok(repositoryService.showAllRepositories());
+
+    @GetMapping("/get-all")
+    public ResponseEntity<List<Repository>> showRepositories(@RequestParam Integer userId) {
+        return ResponseEntity.ok(repositoryService.getAllRepositories(userId));
     }
-    @GetMapping("/getRepository")
-    public ResponseEntity<Optional<Repository>> getRepository(@RequestParam int repositoryId) {
-        return ResponseEntity.ok(repositoryService.getRepository(repositoryId));
+
+    @GetMapping("/get")
+    public ResponseEntity<Optional<Repository>> getRepository(
+            @RequestParam Integer repositoryId, @RequestParam Integer userId) {
+        return ResponseEntity.ok(repositoryService.getRepository(repositoryId, userId));
     }
 }

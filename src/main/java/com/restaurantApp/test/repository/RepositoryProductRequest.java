@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RepositoryProductRequest {
-    int idRepository;
-    int idProduct;
+    int repositoryId;
+    int productId;
 }

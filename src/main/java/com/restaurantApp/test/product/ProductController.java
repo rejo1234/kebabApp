@@ -1,6 +1,6 @@
 package com.restaurantApp.test.product;
-import com.restaurantApp.test.repository.CreateRepositoryRequest;
-import com.restaurantApp.test.repository.RepositoryService;
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,37 +11,43 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 @AllArgsConstructor
 public class ProductController {
-    private RepositoryService repositoryService;
     private ProductService productService;
-    @PatchMapping("/updateProduct")
+    private ShowProductResponse showProductResponse;
+
+    @PatchMapping("/update/{repositoryId}")
     public ResponseEntity<Void> updateProduct(
-            @RequestBody CreateProductRequest createProductRequest
+            @RequestBody CreateProductRequest createProductRequest, @PathVariable Integer repositoryId
+            ,@RequestParam Integer userId
     ) {
-        productService.updateProduct(createProductRequest);
+        productService.updateProduct(createProductRequest.getProductDto(), repositoryId, userId);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/createProduct")
+
+    @PostMapping("/create")
     public ResponseEntity<Void> createProductProduct(
-            @RequestBody CreateProductRequest createProductRequest
+            @RequestBody @Valid CreateProductRequest createProductRequest, @RequestParam Integer userId
     ) {
-        productService.createProduct(createProductRequest);
+        productService.createProduct(createProductRequest.getProductDto(), userId);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/getProduct")
-    public ResponseEntity<Product> showProduct(
-            @RequestBody String product
+
+    @GetMapping("/get")
+    public ResponseEntity<Product> getProduct(
+            @RequestParam String nameProduct, @RequestParam Integer userId
     ) {
-        return ResponseEntity.ok(productService.findProduct(product));
+        return ResponseEntity.ok(showProductResponse.getProduct(nameProduct, userId));
     }
-    @GetMapping("/getAvailableProducts")
-    public ResponseEntity<List<Product>> showAvailableProducts() {
-        return ResponseEntity.ok(productService.availableProducts());
+
+    @GetMapping("/get-available")
+    public ResponseEntity<List<Product>> showAvailableProducts(@RequestParam Integer userId) {
+        return ResponseEntity.ok(showProductResponse.getListProducts(userId));
     }
-    @DeleteMapping("/deleteProduct")
+
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteRProduct(
-            @RequestParam int productId
+            @RequestParam Integer productId, @RequestParam Integer userId
     ) {
-        productService.deleteProduct(productId);
+        productService.deleteProduct(productId, userId);
         return ResponseEntity.ok().build();
     }
 }

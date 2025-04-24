@@ -23,20 +23,15 @@ public class Repository {
     private Integer id;
     private String address;
     private String name;
-    @ManyToMany(mappedBy = "userListRepository")
-    @JsonManagedReference
-    private List<User> restaurantListUser = new ArrayList<>();
+    @ManyToMany(mappedBy = "repositoryList")
+    @JsonManagedReference(value = "user-repository")
+    private List<User> userList = new ArrayList<>();
 
-    @ManyToMany
-    @JsonBackReference
-    @JoinTable(
-            name = "repository_product",
-            joinColumns = @JoinColumn(name = "repository_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> productListRepository = new ArrayList<>();
+    @OneToMany(mappedBy = "repository")
+    @JsonBackReference(value = "repository-product")
+    private List<Product> productList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "repositoryList")
-    @JsonManagedReference
-    private List<Restaurant> restaurantsList = new ArrayList<>();
+    @JsonManagedReference(value = "restaurant-repository")
+    private List<Restaurant> restaurantList = new ArrayList<>();
 }

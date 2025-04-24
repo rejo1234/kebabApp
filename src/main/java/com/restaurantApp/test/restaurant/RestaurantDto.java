@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,6 @@ public class RestaurantDto {
     private String name;
     private String city;
     private String address;
+    private List<Integer> repositoryList;
+    private List<Integer> userIdList;
 }
