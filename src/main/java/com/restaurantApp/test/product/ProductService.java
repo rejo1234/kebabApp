@@ -21,31 +21,34 @@ public class ProductService {
     private final AuthenticateContextService authenticationContextService;
 
     public void deleteProduct(Integer productId, Integer userId) {
-        authenticationContextService.authenticateUserId(userId);
-        var product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Produkt nie istnieje"));
-        productRepository.delete(product);
+        authenticationContextService.validateUserId(userId);
+        authenticationContextService.validateProductIdBelongsToRepository(productId);
+        if (!productRepository.existsById(productId)) {
+            throw new IllegalArgumentException("Repository nie istnieje");
+        }
+        productRepository.deleteById(productId);
     }
 
     public void updateProduct(ProductDto productDto, Integer repositoryId, Integer userId) {
-        authenticationContextService.authenticateUserId(userId);
+        authenticationContextService.validateUserId(userId);
+        authenticationContextService.validateRepositoryList(repositoryId);
+        authenticationContextService.validateProductIdBelongsToRepository(productDto.getId());
         var product = productRepository.findById(productDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Product nie istnieje"));
-
-        authenticationContextService.authenticateRepositoryList(repositoryId);
-        product.setId(productDto.getId());
-        product.setName(productDto.getName());
-        product.setWeight(productDto.getWeight());
+        var prod = productMapper.dtoToProduct(productDto);
+        product.setName(prod.getName());
+        product.setWeight(prod.getWeight());
         productRepository.save(product);
     }
 
     public Product findProduct(String name, Integer userId) {
-        authenticationContextService.authenticateUserId(userId);
+        authenticationContextService.validateUserId(userId);
         return productRepository.findByName(name);
     }
 
     public void createProduct(ProductDto productDto, Integer userId) {
-        authenticationContextService.authenticateUserId(userId);
+        authenticationContextService.validateUserId(userId);
+        authenticationContextService.validateRepositoryList(productDto.getRepositoryId());
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Repository nie istnieje"));
         var product = productMapper.dtoToProduct(productDto);
@@ -54,7 +57,7 @@ public class ProductService {
     }
 
     public List<Product> availableProducts(Integer userId) {
-        authenticationContextService.authenticateUserId(userId);
+        authenticationContextService.validateUserId(userId);
         return productRepository.findByWeightGreaterThan(0);
     }
 }

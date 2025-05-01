@@ -18,7 +18,7 @@ public class ProductDto {
     private Integer id;
     @NotBlank(message = "Nazwa produktu nie może być pusta")
     private String name;
-    @Min(value = 1, message = "Ilość musi być przynajmniej 1")
+    @DecimalMin(value = "0.1", message = "Ilość musi być przynajmniej 1")
     private Double weight;
     private Integer repositoryId;
 }

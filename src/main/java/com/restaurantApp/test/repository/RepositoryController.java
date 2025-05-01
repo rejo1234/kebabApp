@@ -14,7 +14,7 @@ import java.util.Optional;
 public class RepositoryController {
     private final RepositoryService repositoryService;
 
-    @DeleteMapping("deleteConnectionWithProduct")
+    @PatchMapping("delete-connection-with-product")
     public ResponseEntity<Void> deleteConnectionRepositoryAndProduct(
             @RequestBody RepositoryProductRequest repositoryProductRequest, @RequestParam Integer userId
     ) {
@@ -55,19 +55,24 @@ public class RepositoryController {
     }
 
     @GetMapping("/get-all-connected-to-restaurant")
-    public ResponseEntity<List<Repository>> showRepositoriesConnectedToOneRestaurant(@RequestParam Integer restaurantId
-    ,Integer userId) {
-        return ResponseEntity.ok(repositoryService.getRepositoriesConnectedToOneRestaurant(restaurantId, userId));
+    public ResponseEntity<List<RepositoryDto>> showRepositoriesConnectedToOneRestaurant(@RequestParam Integer restaurantId
+            , @RequestParam Integer userId) {
+        return ResponseEntity.ok(repositoryService.getRepositoriesForRestaurant(restaurantId, userId));
+    }
+
+    @GetMapping("/get-all-connected-to-user")
+    public ResponseEntity<List<RepositoryDto>> showRepositoriesConnectedToOneUser(@RequestParam Integer userId) {
+        return ResponseEntity.ok(repositoryService.getRepositoriesForUser(userId));
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<Repository>> showRepositories(@RequestParam Integer userId) {
-        return ResponseEntity.ok(repositoryService.getAllRepositories(userId));
+    public ResponseEntity<List<RepositoryDto>> showRepositories() {
+        return ResponseEntity.ok(repositoryService.getAllRepositories());
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Optional<Repository>> getRepository(
-            @RequestParam Integer repositoryId, @RequestParam Integer userId) {
-        return ResponseEntity.ok(repositoryService.getRepository(repositoryId, userId));
+    public ResponseEntity<RepositoryDto> getRepository(
+            @RequestParam Integer userId, @RequestParam Integer repositoryId) {
+        return ResponseEntity.ok(repositoryService.getRepository(userId, repositoryId));
     }
 }

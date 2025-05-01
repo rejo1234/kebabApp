@@ -14,7 +14,7 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
     private final RepositoryService repositoryService;
 
-    @DeleteMapping("delete-connection-with-repository")
+    @PatchMapping("/delete-connection-with-repository")
     public ResponseEntity<Void> deleteConnectionRestaurantAndRepository(
             @RequestBody RestaurantRepositoryRequest restaurantRepositoryRequest, @RequestParam Integer userId
     ) {
@@ -38,9 +38,9 @@ public class RestaurantController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/update/{restaurantId}")
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateRestaurant(
-            @RequestBody CreateRestaurantRequest createRestaurantRequest, @PathVariable Integer restaurantId
+            @RequestBody CreateRestaurantRequest createRestaurantRequest, @RequestParam Integer restaurantId
             , @RequestParam Integer userId
     ) {
         restaurantService.updateRestaurant(createRestaurantRequest.getRestaurantDto(), restaurantId, userId);
@@ -67,7 +67,7 @@ public class RestaurantController {
 
     @GetMapping("/get-restaurants-connected-one-repository")
     public ResponseEntity<List<Restaurant>> showRestaurantsConnectedToOneRepository(@RequestParam Integer repositoryId
-    , @RequestParam Integer userId) {
+            , @RequestParam Integer userId) {
         return ResponseEntity.ok(restaurantService.showRestaurantsConnectedToOneRepository(repositoryId, userId));
     }
 }

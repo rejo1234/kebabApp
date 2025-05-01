@@ -32,4 +32,12 @@ public class RepositoryMapper {
                 .userList(userList)
                 .build();
     }
+
+    public RepositoryDto repositoryToDto(Repository repository) {
+        return RepositoryDto.builder()
+                .id(repository.getId())
+                .name(repository.getName())
+                .address(repository.getAddress())
+                .build();
+    }
 }

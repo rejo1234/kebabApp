@@ -11,14 +11,13 @@ import com.restaurantApp.test.user.User;
 import com.restaurantApp.test.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
 
-public class crateDatesAtStartApplication implements CommandLineRunner {
+public class CreateDatesAtStartApplication implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final RepositoryRepository repositoryRepository;

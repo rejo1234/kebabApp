@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
     private List<Restaurant> restaurantList = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_repository",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,7 +49,6 @@ public class User implements UserDetails {
     )
     @JsonBackReference(value = "user-repository")
     private List<Repository> repositoryList = new ArrayList<>();
-
 
 
     @Override

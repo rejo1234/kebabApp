@@ -14,10 +14,10 @@ public class ProductController {
     private ProductService productService;
     private ShowProductResponse showProductResponse;
 
-    @PatchMapping("/update/{repositoryId}")
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateProduct(
-            @RequestBody CreateProductRequest createProductRequest, @PathVariable Integer repositoryId
-            ,@RequestParam Integer userId
+            @RequestBody CreateProductRequest createProductRequest, @RequestParam Integer userId
+            , @RequestParam Integer repositoryId
     ) {
         productService.updateProduct(createProductRequest.getProductDto(), repositoryId, userId);
         return ResponseEntity.ok().build();

@@ -27,7 +27,7 @@ public class Repository {
     @JsonManagedReference(value = "user-repository")
     private List<User> userList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "repository")
+    @OneToMany(mappedBy = "repository", fetch = FetchType.EAGER)
     @JsonBackReference(value = "repository-product")
     private List<Product> productList = new ArrayList<>();
 

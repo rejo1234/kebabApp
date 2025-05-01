@@ -6,11 +6,12 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 @Data
 @Builder
 @AllArgsConstructor
-//nie lepiej było tu uzyc component zamiast statica?
+
 public class ShowProductResponse {
     private final ProductService productService;
 

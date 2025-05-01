@@ -45,7 +45,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete-connection-with-repository")
+    @PatchMapping("delete-connection-with-repository")
     public ResponseEntity<Void> deleteConnectionUserAndRepository(
             @RequestBody UserRepositoryRequest userRepositoryRequest, @RequestParam Integer userId
     ) {
@@ -53,7 +53,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("delete-connection-with-restaurant")
+    @PatchMapping("delete-connection-with-restaurant")
     public ResponseEntity<Void> deleteConnectionUserAndRestaurant(
             @RequestBody UserRestaurantRequest userRestaurantRequest, @RequestParam Integer userId
     ) {

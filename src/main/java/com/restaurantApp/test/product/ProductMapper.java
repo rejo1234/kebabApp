@@ -12,9 +12,7 @@ import java.util.List;
 public class ProductMapper {
     RepositoryRepository repositoryRepository;
 
-
     public Product dtoToProduct(ProductDto productDto) {
-        // productDto.getRepositoryId() to ma zero dlatego nie znajduje repository
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
 
