@@ -1,6 +1,6 @@
 package com.restaurantApp.test.user;
 
-import com.restaurantApp.test.auth.AuthenticateContextService;
+import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.auth.CreateUserRequest;
 import com.restaurantApp.test.auth.UserMapper;
 import com.restaurantApp.test.repository.Repository;
@@ -16,7 +16,7 @@ public class UserService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final RepositoryRepository repositoryRepository;
-    private final AuthenticateContextService authenticationContextService;
+    private final ContextService authenticationContextService;
     private final UserMapper userMapper;
 
     public void deleteConnectionUserAndRestaurant(UserRestaurantRequest userRestaurantRequest, Integer userId) {

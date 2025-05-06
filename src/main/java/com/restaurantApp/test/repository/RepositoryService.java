@@ -1,6 +1,6 @@
 package com.restaurantApp.test.repository;
 
-import com.restaurantApp.test.auth.AuthenticateContextService;
+import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.restaurant.Restaurant;
@@ -20,7 +20,7 @@ public class RepositoryService {
     private final RestaurantRepository restaurantRepository;
     private final ProductRepository productRepository;
     private final RepositoryMapper repositoryMapper;
-    private final AuthenticateContextService authenticationContextService;
+    private final ContextService authenticationContextService;
     private final UserRepository userRepository;
 
     @Transactional

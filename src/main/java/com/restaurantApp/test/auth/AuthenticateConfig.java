@@ -15,8 +15,8 @@ public class AuthenticateConfig {
     RestaurantRepository restaurantRepository;
 
     @Bean
-    public AuthenticateContextService authenticateContextService() {
-        return new AuthenticateContextService(userRepository, repositoryRepository);
+    public ContextService authenticateContextService() {
+        return new ContextService(userRepository, repositoryRepository);
     }
 
     @Bean
