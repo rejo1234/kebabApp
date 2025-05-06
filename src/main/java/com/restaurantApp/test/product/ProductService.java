@@ -3,11 +3,7 @@ package com.restaurantApp.test.product;
 import com.restaurantApp.test.auth.AuthenticateContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.user.User;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,16 +25,16 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public void updateProduct(ProductDto productDto, Integer repositoryId, Integer userId) {
+    public void updateProduct(ProductDto productDto, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryId);
+        //ifem
+        authenticationContextService.validateRepositoryList(productDto.getRepositoryId());
         authenticationContextService.validateProductIdBelongsToRepository(productDto.getId());
-        var product = productRepository.findById(productDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Product nie istnieje"));
+        if (!productRepository.existsById(productDto.getId())) {
+            throw new IllegalArgumentException("Produckt nie istnieje");
+        }
         var prod = productMapper.dtoToProduct(productDto);
-        product.setName(prod.getName());
-        product.setWeight(prod.getWeight());
-        productRepository.save(product);
+        productRepository.save(prod);
     }
 
     public Product findProduct(String name, Integer userId) {

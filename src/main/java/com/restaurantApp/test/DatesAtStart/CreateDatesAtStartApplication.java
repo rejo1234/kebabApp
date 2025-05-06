@@ -1,4 +1,4 @@
-package com.restaurantApp.test;
+package com.restaurantApp.test.DatesAtStart;
 
 import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.product.ProductRepository;
@@ -12,11 +12,8 @@ import com.restaurantApp.test.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
-@Component
-
 public class CreateDatesAtStartApplication implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;

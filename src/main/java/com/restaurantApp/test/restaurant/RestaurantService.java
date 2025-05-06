@@ -3,14 +3,8 @@ package com.restaurantApp.test.restaurant;
 import com.restaurantApp.test.auth.AuthenticateContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.user.User;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.descriptor.web.ContextService;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,8 +33,6 @@ public class RestaurantService {
 
     public void connectRepositoryToRestaurant(RestaurantRepositoryRequest restaurantRepositoryRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRestaurantList(restaurantRepositoryRequest.getRepositoryId());
-        authenticationContextService.validateRepositoryList(restaurantRepositoryRequest.getRepositoryId());
         Restaurant restaurant = restaurantRepository.findById(restaurantRepositoryRequest.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
         Repository repository = repositoryRepository.findById(restaurantRepositoryRequest.getRepositoryId())
@@ -78,14 +70,11 @@ public class RestaurantService {
     public void updateRestaurant(RestaurantDto restaurantDto, Integer restaurantId, Integer userId) {
         authenticationContextService.validateUserId(userId);
         authenticationContextService.validateRestaurantList(restaurantId);
-        var restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
-        authenticationContextService.validateRestaurantList(restaurantId);
+        if (!restaurantRepository.existsById(restaurantId)) {
+            throw new IllegalArgumentException("Restauracja nie istnieje");
+        }
         Restaurant updatedRestaurant = restaurantMapper.dtoToRestaurant(restaurantDto);
-        restaurant.setName(updatedRestaurant.getName());
-        restaurant.setCity(updatedRestaurant.getCity());
-        restaurant.setAddress(updatedRestaurant.getAddress());
-        restaurantRepository.save(restaurant);
+        restaurantRepository.save(updatedRestaurant);
     }
 
     public void deleteRestaurant(Integer restaurantId, Integer userId) {

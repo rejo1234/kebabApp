@@ -1,8 +1,6 @@
 package com.restaurantApp.test.user;
 
 import com.restaurantApp.test.auth.CreateUserRequest;
-import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.restaurant.RestaurantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

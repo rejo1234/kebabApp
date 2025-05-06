@@ -3,11 +3,8 @@ package com.restaurantApp.test.product;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
 
-@Component
 @AllArgsConstructor
 public class ProductMapper {
     RepositoryRepository repositoryRepository;
@@ -21,6 +18,16 @@ public class ProductMapper {
                 .name(productDto.getName())
                 .weight(productDto.getWeight())
                 .repository(repository)
+                .build();
+    }
+
+    public ProductDto productToDto(Product product) {
+        Integer idRepository = product.getRepository().getId();
+
+        return ProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .repositoryId(idRepository)
                 .build();
     }
 }

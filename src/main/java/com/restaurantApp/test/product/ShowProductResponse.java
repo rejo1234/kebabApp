@@ -3,11 +3,9 @@ package com.restaurantApp.test.product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @Data
 @Builder
 @AllArgsConstructor

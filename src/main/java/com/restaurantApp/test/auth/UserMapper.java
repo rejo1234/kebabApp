@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @AllArgsConstructor
 public class UserMapper {
     RepositoryRepository repositoryRepository;
@@ -25,6 +24,17 @@ public class UserMapper {
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .role(userDto.getRole())
+                .build();
+    }
+
+    public UserDto userToDto(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .role(user.getRole())
                 .build();
     }
 }

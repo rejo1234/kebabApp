@@ -15,7 +15,7 @@ public class RepositoryDto {
     private Integer id;
     private String address;
     private String name;
-    private List<Integer> productList;
-    private List<Integer> restaurantList;
-    private List<Integer> userList;
+    private List<Integer> productListId;
+    private List<Integer> restaurantListId;
+    private List<Integer> userListId;
 }

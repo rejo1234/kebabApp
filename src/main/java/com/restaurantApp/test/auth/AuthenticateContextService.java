@@ -11,34 +11,34 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @AllArgsConstructor
 public class AuthenticateContextService {
     UserRepository userRepository;
     RepositoryRepository repositoryRepository;
-    public void validateUserId(Integer userId){
+
+    public void validateUserId(Integer userId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
-            if (!userId.equals(((User) principal).getId())){
-            System.out.println("Brak uprawnień do wykonania tej operacji");
-            throw new AccessDeniedException("tutaj chcialem print ale nie leci w logach idk czemu");
-        }
-    }
-    public void validateUserIsAdmin(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var principal = authentication.getPrincipal();
-        User currentUser = (User) principal;
-        if (!currentUser.getRole().equals(Role.ADMIN)){
+        if (!userId.equals(((User) principal).getId())) {
             System.out.println("Brak uprawnień do wykonania tej operacji");
             throw new AccessDeniedException("tutaj chcialem print ale nie leci w logach idk czemu");
         }
     }
 
-    public void validateRepositoryList(Integer repositoryId){
+    public void validateUserIsAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var principal = authentication.getPrincipal();
+        User currentUser = (User) principal;
+        if (!currentUser.getRole().equals(Role.ADMIN)) {
+            System.out.println("Brak uprawnień do wykonania tej operacji");
+            throw new AccessDeniedException("tutaj chcialem print ale nie leci w logach idk czemu");
+        }
+    }
+
+    public void validateRepositoryList(Integer repositoryId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
         User currentUser = (User) principal;
@@ -46,11 +46,12 @@ public class AuthenticateContextService {
         List<Integer> repositoryIdList = currentUser.getRepositoryList().stream()
                 .map(Repository::getId)
                 .toList();
-        if (!repositoryIdList.contains(repositoryId)){
+        if (!repositoryIdList.contains(repositoryId)) {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }
-    public void validateRepositoryIdBelongsToRestaurant(Integer repositoryId){
+
+    public void validateRepositoryIdBelongsToRestaurant(Integer repositoryId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
         User currentUser = (User) principal;
@@ -60,25 +61,27 @@ public class AuthenticateContextService {
                 .map(Repository::getId)
                 .toList();
 
-        if (!repositoryIdList.contains(repositoryId)){
+        if (!repositoryIdList.contains(repositoryId)) {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }
-    public void validateProductIdBelongsToRepository(Integer productId){
+
+    public void validateProductIdBelongsToRepository(Integer productId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
         User currentUser = (User) principal;
 
         List<Integer> productIdList = currentUser.getRepositoryList().stream()
-               .flatMap(repository -> repository.getProductList().stream())
+                .flatMap(repository -> repository.getProductList().stream())
                 .map(Product::getId)
                 .toList();
 
-        if (!productIdList.contains(productId)){
+        if (!productIdList.contains(productId)) {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }
-    public void validateRestaurantList(Integer restaurantId){
+
+    public void validateRestaurantList(Integer restaurantId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
         User currentUser = (User) principal;
@@ -87,7 +90,7 @@ public class AuthenticateContextService {
                 .map(Restaurant::getId)
                 .toList();
 
-        if (!restaurantIdList.contains(restaurantId)){
+        if (!restaurantIdList.contains(restaurantId)) {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }

@@ -2,6 +2,7 @@ package com.restaurantApp.test.user;
 
 import com.restaurantApp.test.auth.AuthenticateContextService;
 import com.restaurantApp.test.auth.CreateUserRequest;
+import com.restaurantApp.test.auth.UserMapper;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.Restaurant;
@@ -16,10 +17,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final RepositoryRepository repositoryRepository;
     private final AuthenticateContextService authenticationContextService;
+    private final UserMapper userMapper;
 
     public void deleteConnectionUserAndRestaurant(UserRestaurantRequest userRestaurantRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        //sprawdzić czy id restarunt jest dobre czy zrobic osobny requestparam na restaurantId
         authenticationContextService.validateRestaurantList(userRestaurantRequest.getRestaurantId());
         User user = userRepository.findById(userRestaurantRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
@@ -33,7 +34,6 @@ public class UserService {
 
     public void deleteConnectionUserAndRepository(UserRepositoryRequest userRepositoryRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        //sprawdzić czy id repository jest dobre czy zrobic osobny requestparam na repositoryId
         authenticationContextService.validateRepositoryList(userRepositoryRequest.getRepositoryId());
         User user = userRepository.findById(userRepositoryRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
@@ -55,13 +55,11 @@ public class UserService {
 
     public void updateUser(CreateUserRequest createUserRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        var user = userRepository.findById(createUserRequest.getUserDto().getId())
-                .orElseThrow(() -> new IllegalArgumentException("User nie istnieje"));
-        user.setEmail(createUserRequest.getUserDto().getEmail());
-        user.setFirstname(createUserRequest.getUserDto().getFirstname());
-        user.setLastname(createUserRequest.getUserDto().getLastname());
-        user.setPassword(createUserRequest.getUserDto().getPassword());
-        userRepository.save(user);
+        if (!userRepository.existsById(userId)) {
+            throw new IllegalArgumentException("user nie istnieje");
+        }
+        var updatedUser = userMapper.dtoToUser(createUserRequest.getUserDto());
+        userRepository.save(updatedUser);
     }
 
     public void connectRestaurantToUser(UserRestaurantRequest userRestaurantRequest, Integer userId) {

@@ -5,16 +5,15 @@ import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.user.User;
 import com.restaurantApp.test.user.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 @AllArgsConstructor
 public class RestaurantMapper {
 
     UserRepository userRepository;
     RepositoryRepository repositoryRepository;
+
 
     public Restaurant dtoToRestaurant(RestaurantDto restaurantDto) {
         List<Repository> repositoryList = repositoryRepository.findAllById(restaurantDto.getUserIdList());
@@ -26,6 +25,25 @@ public class RestaurantMapper {
                 .address(restaurantDto.getAddress())
                 .repositoryList(repositoryList)
                 .userList(userList)
+                .build();
+    }
+
+    public RestaurantDto restaurantToRestaurantDto(Restaurant restaurant) {
+        List<Integer> listRepositoryId = restaurant.getRepositoryList().stream()
+                .map(Repository::getId)
+                .toList();
+
+        List<Integer> listUserId = restaurant.getUserList().stream()
+                .map(User::getId)
+                .toList();
+
+        return RestaurantDto.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getName())
+                .city(restaurant.getCity())
+                .address(restaurant.getAddress())
+                .repositoryList(listRepositoryId)
+                .userIdList(listUserId)
                 .build();
     }
 }
