@@ -34,8 +34,7 @@ public class RepositoryService {
                 .orElseThrow(() -> new RuntimeException("Product nie znaleziono"));
         if (!product.getRepository().getId().equals(repository.getId())) {
             throw new IllegalArgumentException(
-                    "Produkt o id " + product.getId() +
-                            " NIE jest powiązany z repozytorium o id " + repository.getId()
+                    "Produkt o id " + product.getId() + " NIE jest powiązany z repozytorium o id " + repository.getId()
             );
         }
 

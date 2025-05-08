@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
-    private ShowProductResponse showProductResponse;
 
     @PatchMapping("/update")
     public ResponseEntity<Void> updateProduct(
@@ -33,12 +32,12 @@ public class ProductController {
     public ResponseEntity<Product> getProduct(
             @RequestParam String nameProduct, @RequestParam Integer userId
     ) {
-        return ResponseEntity.ok(showProductResponse.getProduct(nameProduct, userId));
+        return ResponseEntity.ok(productService.findProduct(nameProduct, userId));
     }
 
     @GetMapping("/get-available")
     public ResponseEntity<List<Product>> showAvailableProducts(@RequestParam Integer userId) {
-        return ResponseEntity.ok(showProductResponse.getListProducts(userId));
+        return ResponseEntity.ok(productService.availableProducts(userId));
     }
 
     @DeleteMapping("/delete")

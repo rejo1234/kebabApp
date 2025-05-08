@@ -68,8 +68,12 @@ public class RestaurantService {
     }
 
     public void updateRestaurant(RestaurantDto restaurantDto, Integer restaurantId, Integer userId) {
+        if (restaurantDto.getId().equals(restaurantId)){
+            throw new IllegalArgumentException("error idrestaurant is not equals");
+        }
         authenticationContextService.validateUserId(userId);
         authenticationContextService.validateRestaurantList(restaurantId);
+        authenticationContextService.validateRestaurantList(restaurantDto.getId());
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("Restauracja nie istnieje");
         }

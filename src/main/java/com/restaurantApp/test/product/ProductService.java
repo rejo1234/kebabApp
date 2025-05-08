@@ -4,17 +4,16 @@ import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @AllArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final RepositoryRepository repositoryRepository;
     private final ContextService authenticationContextService;
+
 
     public void deleteProduct(Integer productId, Integer userId) {
         authenticationContextService.validateUserId(userId);
