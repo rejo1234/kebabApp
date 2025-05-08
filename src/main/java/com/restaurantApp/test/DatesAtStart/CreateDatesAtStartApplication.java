@@ -34,6 +34,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 "idk",
                 Role.USER,
                 null,
+                null,
                 null
         );
         User user2 = new User(null,
@@ -42,6 +43,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 "maciekfranczak@gmail.com",
                 "idk2",
                 Role.USER,
+                null,
                 null,
                 null
         );
@@ -55,6 +57,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 "katowice",
                 "odrodzenia 11",
                 null,
+                null,
                 null
         );
         Restaurant restaurant2 = new Restaurant(
@@ -62,6 +65,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 "bula",
                 "czestochowa",
                 "pokoju 11",
+                null,
                 null,
                 null
         );
@@ -73,12 +77,14 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 "kielce 12",
                 null,
                 null,
+                null,
                 null
         );
         Repository repository2 = new Repository(
                 null,
                 "bedzin 31",
                 "bedzin 12",
+                null,
                 null,
                 null,
                 null

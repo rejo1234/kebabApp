@@ -1,6 +1,7 @@
 package com.restaurantApp.test.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.restaurant.Restaurant;
 import jakarta.persistence.*;
@@ -50,7 +51,9 @@ public class User implements UserDetails {
     @JsonBackReference(value = "user-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonBackReference(value = "user-order")
+    private List<Order> orderList = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

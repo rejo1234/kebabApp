@@ -2,6 +2,7 @@ package com.restaurantApp.test.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.user.User;
 import jakarta.persistence.Entity;
@@ -40,4 +41,8 @@ public class Restaurant {
     @ManyToMany(mappedBy = "restaurantList")
     @JsonManagedReference(value = "user-restaurant")
     private List<User> userList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @JsonBackReference(value = "restaurant-order")
+    private List<Order> orderList = new ArrayList<>();
 }
