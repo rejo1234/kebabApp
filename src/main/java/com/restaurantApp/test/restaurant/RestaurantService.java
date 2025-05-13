@@ -1,6 +1,6 @@
 package com.restaurantApp.test.restaurant;
 
-import com.restaurantApp.test.auth.AuthenticateContextService;
+import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class RestaurantService {
     private final RepositoryRepository repositoryRepository;
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
-    private final AuthenticateContextService authenticationContextService;
+    private final ContextService authenticationContextService;
 
     public void deleteConnectionRestaurantAndRepository(RestaurantRepositoryRequest userRestaurantRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
@@ -68,8 +68,12 @@ public class RestaurantService {
     }
 
     public void updateRestaurant(RestaurantDto restaurantDto, Integer restaurantId, Integer userId) {
+        if (restaurantDto.getId().equals(restaurantId)){
+            throw new IllegalArgumentException("error idrestaurant is not equals");
+        }
         authenticationContextService.validateUserId(userId);
         authenticationContextService.validateRestaurantList(restaurantId);
+        authenticationContextService.validateRestaurantList(restaurantDto.getId());
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("Restauracja nie istnieje");
         }

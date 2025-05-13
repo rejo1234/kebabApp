@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 
 @AllArgsConstructor
-public class AuthenticateContextService {
+public class ContextService {
     UserRepository userRepository;
     RepositoryRepository repositoryRepository;
 
