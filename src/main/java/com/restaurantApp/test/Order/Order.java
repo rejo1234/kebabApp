@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @NoArgsConstructor
@@ -26,12 +27,12 @@ public class Order {
     private OrderState orderState;
     private String orderName;
     private String spaceForComment;
-    private Date dateOfCreate;
-    private Date dateToPickUp;
-    @ElementCollection
+    private LocalDateTime dateOfCreate;
+    private LocalDateTime dateToPickUp;
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "orders_products",            // nazwa tabeli kolekcji
-            joinColumns = @JoinColumn(name = "orders_id")  // FK do tabeli orders
+            name = "orders_products",
+            joinColumns = @JoinColumn(name = "orders_id")
     )
     private List<OrderProductDto> orderProductDtoList;
 
@@ -53,5 +54,19 @@ public class Order {
     @PrePersist
     private void assignOrderName() {
         this.orderName = "zamówienie " + this.id;
+    }
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderState=" + orderState +
+                ", orderName='" + orderName + '\'' +
+                ", spaceForComment='" + spaceForComment + '\'' +
+                ", dateOfCreate=" + dateOfCreate +
+                ", dateToPickUp=" + dateToPickUp +
+                ", repositoryId=" + repository.getId() +
+                ", restaurantId=" + restaurant.getId() +
+                ", userId=" + user.getId() +
+                ", orderProductDtoList=" + orderProductDtoList;
     }
 }

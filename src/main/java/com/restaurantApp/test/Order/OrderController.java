@@ -1,12 +1,6 @@
 package com.restaurantApp.test.Order;
 
 
-import com.restaurantApp.test.repository.Repository;
-import com.restaurantApp.test.repository.RepositoryDto;
-import com.restaurantApp.test.repository.RepositoryService;
-import com.restaurantApp.test.restaurant.Restaurant;
-import com.restaurantApp.test.restaurant.RestaurantService;
-import com.restaurantApp.test.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +12,34 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
     OrderService orderService;
-    @PostMapping("/make")
-    public ResponseEntity<Void> makeOrder(
-            @RequestBody CreateOrderRequest createOrderRequest, @RequestParam Integer userId
-    ) {
-        orderService.makeOrder(createOrderRequest, userId);
+
+    @PatchMapping("/modify-order")
+    public ResponseEntity<Void> updateOrder(
+            @RequestBody ModifyOrderRequest modifyOrderRequest, @RequestParam Integer userId) {
+        orderService.modifyOrder(modifyOrderRequest.getOrderDto(), userId);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/get-all-connected-to-restaurant")
-    public ResponseEntity<List<OrderDto>> showOrdersConnectedToOneRestaurant(@RequestParam Integer restaurantId
-            , @RequestParam Integer userId) {
-        return ResponseEntity.ok(orderService.getOrdersForRestaurant(restaurantId, userId));
+
+    @PatchMapping("/cancel-order")
+    public ResponseEntity<Void> cancelOrder(
+            @RequestBody CreateOrderRequest createOrderRequest, @RequestParam Integer userId) {
+        orderService.cancelOrder(createOrderRequest.getOrderDto(), userId);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/create")
+    public ResponseEntity<Void> createOrder(
+            @RequestBody CreateOrderRequest createOrderRequest, @RequestParam Integer userId
+    ) {
+        orderService.createOrder(createOrderRequest.getOrderDto(), userId);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/get-list")
+    public ResponseEntity<List<OrderDto>> getOrderList(
+            @RequestBody GetOrderListRequest getOrderListRequest, @RequestParam Integer userId
+    ) {
+        return ResponseEntity.ok(orderService.getOrdersList(
+                getOrderListRequest.getRestaurantIdList(),
+                getOrderListRequest.getRepositoryIdList(),
+                userId));
     }
 }

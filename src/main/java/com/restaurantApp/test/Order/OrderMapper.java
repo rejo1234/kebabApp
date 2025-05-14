@@ -9,12 +9,16 @@ import com.restaurantApp.test.user.User;
 import com.restaurantApp.test.user.UserRepository;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @AllArgsConstructor
 
 public class OrderMapper {
     RepositoryRepository repositoryRepository;
     RestaurantRepository restaurantRepository;
     UserRepository userRepository;
+
     public Order dtoToOrder(OrderDto orderDto) {
         Repository repository = repositoryRepository.findById(orderDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
@@ -27,14 +31,21 @@ public class OrderMapper {
                 .user(user)
                 .restaurant(restaurant)
                 .repository(repository)
-                .orderState(OrderState.OCZEKIWANIU)
+                .orderState(OrderState.PENDING)
                 .orderName(orderDto.getOrderName())
                 .spaceForComment(orderDto.getSpaceForComment())
-                .dateOfCreate(orderDto.getDateOfCreate())
+                .dateOfCreate(LocalDateTime.now())
                 .dateToPickUp(orderDto.getDateToPickUp())
                 .orderProductDtoList(orderDto.getOrderProductDtoList())
                 .build();
     }
+
+    public List<OrderDto> convertOrderListToDtoList(List<Order> orders) {
+        return orders.stream()
+                .map(this::orderToDto) // zakładam, że masz taką metodę
+                .toList();
+    }
+
     public OrderDto orderToDto(Order order) {
         Integer repositoryId = order.getRepository().getId();
         Integer restaurantId = order.getRepository().getId();
@@ -47,7 +58,7 @@ public class OrderMapper {
                 .orderState(order.getOrderState())
                 .orderName(order.getOrderName())
                 .spaceForComment(order.getSpaceForComment())
-                .dateOfCreate(order.getDateOfCreate())
+                .dateOfCreate(LocalDateTime.now())
                 .dateToPickUp(order.getDateToPickUp())
                 .orderProductDtoList(order.getOrderProductDtoList())
                 .build();

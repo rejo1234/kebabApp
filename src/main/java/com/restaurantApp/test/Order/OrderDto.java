@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Data
@@ -20,15 +21,10 @@ public class OrderDto {
     private OrderState orderState;
     private String orderName;
     private String spaceForComment;
-    private Date dateOfCreate;
-    private Date dateToPickUp;
+    private LocalDateTime dateOfCreate;
+    private LocalDateTime dateToPickUp;
     private Integer repositoryId;
     private Integer restaurantId;
     private Integer userId;
-//    @ElementCollection
-//    @CollectionTable(
-//            name = "order_products",            // nazwa tabeli kolekcji
-//            joinColumns = @JoinColumn(name = "order_id")  // FK do tabeli orders
-//    )
     private List<OrderProductDto> orderProductDtoList;
 }

@@ -33,7 +33,7 @@ public class Repository {
     private List<Product> productList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "repositoryList")
-    @JsonManagedReference(value = "restaurant-repository")
+    @JsonBackReference(value = "restaurant-repository")
     private List<Restaurant> restaurantList = new ArrayList<>();
 
     @OneToMany(mappedBy = "repository", fetch = FetchType.EAGER)

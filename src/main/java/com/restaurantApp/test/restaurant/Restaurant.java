@@ -29,16 +29,16 @@ public class Restaurant {
     private String name;
     private String city;
     private String address;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "restaurant_repository",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "repository_id")
     )
-    @JsonBackReference(value = "restaurant-repository")
+    @JsonManagedReference(value = "restaurant-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "restaurantList")
+    @ManyToMany(mappedBy = "restaurantList", fetch = FetchType.EAGER)
     @JsonManagedReference(value = "user-restaurant")
     private List<User> userList = new ArrayList<>();
 
