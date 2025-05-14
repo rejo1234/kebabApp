@@ -26,7 +26,7 @@ public class RepositoryService {
     @Transactional
     public void deleteConnectionRepositoryAndProduct(RepositoryProductRequest repositoryProductRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryProductRequest.getRepositoryId());
+        authenticationContextService.validateRepositoryId(repositoryProductRequest.getRepositoryId());
         Repository repository = repositoryRepository.findById(repositoryProductRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("Repository nie znaleziony"));
 
@@ -44,7 +44,7 @@ public class RepositoryService {
 
     public void deleteRepository(Integer repositoryId, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryId);
+        authenticationContextService.validateRepositoryId(repositoryId);
         if (!repositoryRepository.existsById(repositoryId)) {
             throw new IllegalArgumentException("Repository nie istnieje");
         }
@@ -54,7 +54,7 @@ public class RepositoryService {
     @Transactional
     public void connectProductToRepository(RepositoryProductRequest repositoryProductRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryProductRequest.getRepositoryId());
+        authenticationContextService.validateRepositoryId(repositoryProductRequest.getRepositoryId());
         Repository repository = repositoryRepository.findById(repositoryProductRequest.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
 
@@ -66,7 +66,7 @@ public class RepositoryService {
 
     public void updateRepository(RepositoryDto repositoryDto, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryDto.getId());
+        authenticationContextService.validateRepositoryId(repositoryDto.getId());
         var repository = repositoryMapper.dtoToRepository(repositoryDto);
         repositoryRepository.save(repository);
     }
@@ -86,7 +86,7 @@ public class RepositoryService {
 
     public List<RepositoryDto> getRepositoriesForRestaurant(Integer restaurantId, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRestaurantList(restaurantId);
+        authenticationContextService.validateRestaurantId(restaurantId);
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restauracja nie istnieje"));
 
@@ -107,7 +107,7 @@ public class RepositoryService {
 
     public RepositoryDto getRepository(Integer userId, Integer repositoryId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(repositoryId);
+        authenticationContextService.validateRepositoryId(repositoryId);
         Repository repository = repositoryRepository.findById(repositoryId)
                 .orElseThrow();
         return repositoryMapper.repositoryToDto(repository);

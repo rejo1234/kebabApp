@@ -18,8 +18,8 @@ public class RestaurantService {
 
     public void deleteConnectionRestaurantAndRepository(RestaurantRepositoryRequest userRestaurantRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRestaurantList(userRestaurantRequest.getRestaurantId());
-        authenticationContextService.validateRepositoryList(userRestaurantRequest.getRepositoryId());
+        authenticationContextService.validateRestaurantId(userRestaurantRequest.getRestaurantId());
+        authenticationContextService.validateRepositoryId(userRestaurantRequest.getRepositoryId());
         Repository repository = repositoryRepository.findById(userRestaurantRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("Repository nie znaleziony"));
 
@@ -72,8 +72,8 @@ public class RestaurantService {
             throw new IllegalArgumentException("error idrestaurant is not equals");
         }
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRestaurantList(restaurantId);
-        authenticationContextService.validateRestaurantList(restaurantDto.getId());
+        authenticationContextService.validateRestaurantId(restaurantId);
+        authenticationContextService.validateRestaurantId(restaurantDto.getId());
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("Restauracja nie istnieje");
         }

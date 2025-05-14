@@ -2,6 +2,7 @@ package com.restaurantApp.test.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.user.User;
 import jakarta.persistence.Entity;
@@ -28,16 +29,20 @@ public class Restaurant {
     private String name;
     private String city;
     private String address;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "restaurant_repository",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "repository_id")
     )
-    @JsonBackReference(value = "restaurant-repository")
+    @JsonManagedReference(value = "restaurant-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "restaurantList")
+    @ManyToMany(mappedBy = "restaurantList", fetch = FetchType.EAGER)
     @JsonManagedReference(value = "user-restaurant")
     private List<User> userList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @JsonBackReference(value = "restaurant-order")
+    private List<Order> orderList = new ArrayList<>();
 }

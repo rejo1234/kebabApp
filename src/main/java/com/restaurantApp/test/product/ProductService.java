@@ -27,7 +27,7 @@ public class ProductService {
     public void updateProduct(ProductDto productDto, Integer userId) {
         authenticationContextService.validateUserId(userId);
         //ifem
-        authenticationContextService.validateRepositoryList(productDto.getRepositoryId());
+        authenticationContextService.validateRepositoryId(productDto.getRepositoryId());
         authenticationContextService.validateProductIdBelongsToRepository(productDto.getId());
         if (!productRepository.existsById(productDto.getId())) {
             throw new IllegalArgumentException("Produckt nie istnieje");
@@ -43,7 +43,7 @@ public class ProductService {
 
     public void createProduct(ProductDto productDto, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(productDto.getRepositoryId());
+        authenticationContextService.validateRepositoryId(productDto.getRepositoryId());
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Repository nie istnieje"));
         var product = productMapper.dtoToProduct(productDto);

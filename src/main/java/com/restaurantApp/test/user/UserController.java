@@ -1,5 +1,8 @@
 package com.restaurantApp.test.user;
 
+import com.restaurantApp.test.Order.CreateOrderRequest;
+import com.restaurantApp.test.Order.ModifyOrderRequest;
+import com.restaurantApp.test.Order.OrderService;
 import com.restaurantApp.test.auth.CreateUserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
+    private OrderService orderService;
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(
             @RequestParam int userId

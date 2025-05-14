@@ -21,7 +21,7 @@ public class UserService {
 
     public void deleteConnectionUserAndRestaurant(UserRestaurantRequest userRestaurantRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRestaurantList(userRestaurantRequest.getRestaurantId());
+        authenticationContextService.validateRestaurantId(userRestaurantRequest.getRestaurantId());
         User user = userRepository.findById(userRestaurantRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
 
@@ -34,7 +34,7 @@ public class UserService {
 
     public void deleteConnectionUserAndRepository(UserRepositoryRequest userRepositoryRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryList(userRepositoryRequest.getRepositoryId());
+        authenticationContextService.validateRepositoryId(userRepositoryRequest.getRepositoryId());
         User user = userRepository.findById(userRepositoryRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
 
