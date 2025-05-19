@@ -9,6 +9,22 @@ import java.util.List;
 public class OrderValidator {
     ContextService contextService;
     OrderRepository orderRepository;
+    public void acceptOrderValidator(OrderDto orderDto, Integer userId){
+        if (orderDto.getOrderState() != OrderState.PENDING){
+            throw new IllegalArgumentException("Status is not Pending");
+        }
+        contextService.validateUserId(userId);
+        contextService.validateRestaurantId(orderDto.getRestaurantId());
+        contextService.validateRepositoryId(orderDto.getRepositoryId());
+    }
+    public void declineOrderValidator(OrderDto orderDto, Integer userId){
+        if (orderDto.getOrderState() != OrderState.PENDING){
+            throw new IllegalArgumentException("Status is not Pending");
+        }
+        contextService.validateUserId(userId);
+        contextService.validateRestaurantId(orderDto.getRestaurantId());
+        contextService.validateRepositoryId(orderDto.getRepositoryId());
+    }
     public void modifyCancelOrder(OrderDto orderDto, Integer userId){
         if (!orderRepository.existsById(orderDto.getId())) {
             throw new IllegalArgumentException("Order nie istnieje");

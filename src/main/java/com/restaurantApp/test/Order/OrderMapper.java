@@ -42,7 +42,7 @@ public class OrderMapper {
 
     public List<OrderDto> convertOrderListToDtoList(List<Order> orders) {
         return orders.stream()
-                .map(this::orderToDto) // zakładam, że masz taką metodę
+                .map(this::orderToDto)// zakładam, że masz taką metodę
                 .toList();
     }
 

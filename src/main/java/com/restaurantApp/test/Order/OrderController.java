@@ -1,6 +1,7 @@
 package com.restaurantApp.test.Order;
 
 
+import com.restaurantApp.test.repository.RepositoryProductRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
     OrderService orderService;
-
+    @PatchMapping("decline-order")
+    public ResponseEntity<Void> declineOrder(
+            @RequestBody DeclineOrderRequest declineOrderRequest, @RequestParam Integer userId
+    ) {
+        orderService.declineOrder(declineOrderRequest.getOrderDto(), userId);
+        return ResponseEntity.ok().build();
+    }
+    @PatchMapping("/accept")
+    public ResponseEntity<Void> acceptOrder(
+            @RequestBody AcceptOrderRequest acceptOrderRequest, @RequestParam Integer userId
+    ) {
+        orderService.acceptOrder(acceptOrderRequest.getOrderDto(), userId);
+        return ResponseEntity.ok().build();
+    }
     @PatchMapping("/modify-order")
     public ResponseEntity<Void> updateOrder(
             @RequestBody ModifyOrderRequest modifyOrderRequest, @RequestParam Integer userId) {
@@ -40,6 +54,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersList(
                 getOrderListRequest.getRestaurantIdList(),
                 getOrderListRequest.getRepositoryIdList(),
-                userId));
+                userId,
+                getOrderListRequest.periodStart,
+                getOrderListRequest.periodEnd,
+                getOrderListRequest.getOrderState(),
+                getOrderListRequest.getPickUpDate(),
+                getOrderListRequest.getOrderName(),
+                getOrderListRequest.getComment()));
     }
 }

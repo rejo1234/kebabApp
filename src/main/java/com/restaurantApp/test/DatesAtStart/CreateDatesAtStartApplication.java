@@ -90,7 +90,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 null
         );
         repositoryRepository.save(repository);
-        repositoryRepository.save(repository2);
+       repositoryRepository.save(repository2);
         Product product = new Product(
                 null,
                 "meat",
