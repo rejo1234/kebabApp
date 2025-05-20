@@ -29,7 +29,7 @@ public class Order {
     private String spaceForComment;
     private LocalDateTime dateOfCreate;
     private LocalDateTime dateToPickUp;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection()
     @CollectionTable(
             name = "orders_products",
             joinColumns = @JoinColumn(name = "orders_id")

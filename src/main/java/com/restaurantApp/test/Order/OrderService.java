@@ -10,7 +10,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-@Service
 @AllArgsConstructor
 public class OrderService {
     private final ContextService contextService;
@@ -20,33 +19,37 @@ public class OrderService {
     RepositoryRepository repositoryRepository;
     UserRepository userRepository;
     OrderValidator orderValidator;
-
-    public void cancelOrder(OrderDto orderDto, Integer userId) {
-        orderValidator.modifyCancelOrder(orderDto, userId);
-        // pytanie do order w swaggerze trzeba idusera bo do mappera idzie a walidacje robie po userId?
-        var order = orderMapper.dtoToOrder(orderDto);
+    public void cancelOrder(Integer orderId, Integer userId) {
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("order nie istnieje"));
+        orderValidator.validateOrderContext(order, userId);
+        order.setOrderState(OrderState.CANCELLED);
+        orderRepository.save(order);
+    }
+    public void deleteOrder(Integer orderId, Integer userId) {
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("order nie istnieje"));
+        orderValidator.validateOrderContext(order, userId);
         orderRepository.delete(order);
     }
 
     public void modifyOrder(OrderDto orderDto, Integer userId) {
-        orderValidator.modifyOrderValidator(orderDto, userId);
-        //To tez do walidacji? imo nie bo robimy tutaj save
-        orderDto.setOrderState(OrderState.CANCELLED);
-        if (orderDto.getOrderState() == OrderState.CANCELLED) {
-            var order = orderMapper.dtoToOrder(orderDto);
+        var order = orderRepository.findById(orderDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("order nie istnieje"));
+        orderValidator.validateOrderContext(order, userId);
+            order = orderMapper.dtoToOrderForCreate(orderDto);
             orderRepository.save(order);
-        }
     }
 
     public void createOrder(OrderDto orderDto, Integer userId) {
-        orderValidator.createOrderValidator(orderDto, userId);
-        var order = orderMapper.dtoToOrder(orderDto);
+        orderValidator.ValidateCreateOrder(orderDto, userId);
+        var order = orderMapper.dtoToOrderForCreate(orderDto);
         orderRepository.save(order);
     }
 
 
     public List<OrderDto> getOrdersList(List<Integer> restaurantIds, List<Integer> repositoryIds, Integer userId) {
-        orderValidator.getOrdersListValidator(restaurantIds, repositoryIds, userId);
+        orderValidator.ValidateGetOrdersList(restaurantIds, repositoryIds, userId);
         // to tez do validatora? imo tak
         List<Integer> repoIdList = CollectionUtils.isEmpty(repositoryIds) ? contextService.getUserRepositoryIds() : repositoryIds;
         List<Integer> restaurantIdList = CollectionUtils.isEmpty(restaurantIds) ? contextService.getUserRestaurantIds() : restaurantIds;

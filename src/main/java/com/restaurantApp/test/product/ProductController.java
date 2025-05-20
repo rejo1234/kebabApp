@@ -15,8 +15,11 @@ public class ProductController {
 
     @PatchMapping("/update")
     public ResponseEntity<Void> updateProduct(
-            @RequestBody CreateProductRequest createProductRequest, @RequestParam Integer userId) {
-        productService.updateProduct(createProductRequest.getProductDto(), userId);
+            @RequestBody CreateProductRequest createProductRequest,
+            @RequestParam Integer productId,
+            @RequestParam Integer repositoryId,
+            @RequestParam Integer userId) {
+        productService.updateProduct(createProductRequest.getProductDto(), productId, repositoryId, userId);
         return ResponseEntity.ok().build();
     }
 

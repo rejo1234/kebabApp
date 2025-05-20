@@ -29,7 +29,7 @@ public class Restaurant {
     private String name;
     private String city;
     private String address;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(
             name = "restaurant_repository",
             joinColumns = @JoinColumn(name = "restaurant_id"),
@@ -38,11 +38,11 @@ public class Restaurant {
     @JsonManagedReference(value = "restaurant-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "restaurantList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "restaurantList")
     @JsonManagedReference(value = "user-restaurant")
     private List<User> userList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurant")
     @JsonBackReference(value = "restaurant-order")
     private List<Order> orderList = new ArrayList<>();
 }

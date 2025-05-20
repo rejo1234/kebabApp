@@ -19,7 +19,7 @@ public class OrderMapper {
     RestaurantRepository restaurantRepository;
     UserRepository userRepository;
 
-    public Order dtoToOrder(OrderDto orderDto) {
+    public Order dtoToOrderForCreate(OrderDto orderDto) {
         Repository repository = repositoryRepository.findById(orderDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
         Restaurant restaurant = restaurantRepository.findById(orderDto.getRestaurantId())
@@ -40,9 +40,9 @@ public class OrderMapper {
                 .build();
     }
 
-    public List<OrderDto> convertOrderListToDtoList(List<Order> orders) {
+    public List<OrderDto> ordersToDtos(List<Order> orders) {
         return orders.stream()
-                .map(this::orderToDto) // zakładam, że masz taką metodę
+                .map(this::orderToDto)
                 .toList();
     }
 

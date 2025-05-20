@@ -22,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class ApplicationConfig {
     private final UserRepository userRepository;
-
+    @Bean
+    public JwtService jwtService(){
+        return new JwtService();
+    }
     @Bean
     public CommandLineRunner createDatesAtStartRunner(RestaurantRepository restaurantRepository,
     RepositoryRepository repositoryRepository,

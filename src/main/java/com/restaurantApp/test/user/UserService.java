@@ -10,7 +10,6 @@ import com.restaurantApp.test.restaurant.RestaurantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class UserService {
     private final RestaurantRepository restaurantRepository;
@@ -27,6 +26,7 @@ public class UserService {
 
         Restaurant restaurant = restaurantRepository.findById(userRestaurantRequest.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restauracji nie znaleziono"));
+
         restaurant.getUserList().remove(user);
         user.getRestaurantList().remove(restaurant);
         userRepository.save(user);
@@ -35,11 +35,12 @@ public class UserService {
     public void deleteConnectionUserAndRepository(UserRepositoryRequest userRepositoryRequest, Integer userId) {
         authenticationContextService.validateUserId(userId);
         authenticationContextService.validateRepositoryId(userRepositoryRequest.getRepositoryId());
-        User user = userRepository.findById(userRepositoryRequest.getRepositoryId())
+        User user = userRepository.findById(userRepositoryRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User nie znaleziony"));
 
         Repository repository = repositoryRepository.findById(userRepositoryRequest.getRepositoryId())
                 .orElseThrow(() -> new RuntimeException("Repository nie znaleziono"));
+
         repository.getUserList().remove(user);
         user.getRepositoryList().remove(repository);
         userRepository.save(user);

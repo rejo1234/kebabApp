@@ -13,17 +13,22 @@ import java.util.List;
 public class OrderController {
     OrderService orderService;
 
-    @PatchMapping("/modify-order")
-    public ResponseEntity<Void> updateOrder(
+    @PatchMapping("/modify")
+    public ResponseEntity<Void> modifyOrder(
             @RequestBody ModifyOrderRequest modifyOrderRequest, @RequestParam Integer userId) {
         orderService.modifyOrder(modifyOrderRequest.getOrderDto(), userId);
         return ResponseEntity.ok().build();
     }
-
-    @PatchMapping("/cancel-order")
+    @PatchMapping("/cancel")
     public ResponseEntity<Void> cancelOrder(
-            @RequestBody CreateOrderRequest createOrderRequest, @RequestParam Integer userId) {
-        orderService.cancelOrder(createOrderRequest.getOrderDto(), userId);
+            @RequestParam Integer orderId, @RequestParam Integer userId) {
+        orderService.cancelOrder(orderId, userId);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteOrder(
+            @RequestParam Integer orderId, @RequestParam Integer userId) {
+        orderService.deleteOrder(orderId, userId);
         return ResponseEntity.ok().build();
     }
     @PostMapping("/create")

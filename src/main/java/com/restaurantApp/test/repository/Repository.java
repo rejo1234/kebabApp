@@ -28,7 +28,7 @@ public class Repository {
     @JsonManagedReference(value = "user-repository")
     private List<User> userList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "repository", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "repository")
     @JsonBackReference(value = "repository-product")
     private List<Product> productList = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class Repository {
     @JsonBackReference(value = "restaurant-repository")
     private List<Restaurant> restaurantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "repository", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "repository")
     @JsonBackReference(value = "repository-order")
     private List<Order> orderList = new ArrayList<>();
 }

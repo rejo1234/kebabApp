@@ -10,20 +10,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@AllArgsConstructor
 public class OrderConfig {
-    RepositoryRepository repositoryRepository;
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
-    ContextService contextService;
-    OrderRepository orderRepository;
 
     @Bean
-    public OrderValidator orderValidator(){
+    public OrderService orderService(
+            RepositoryRepository repositoryRepository,
+            RestaurantRepository restaurantRepository,
+            UserRepository userRepository,
+            ContextService contextService,
+            OrderRepository orderRepository,
+            OrderMapper orderMapper,
+            OrderValidator orderValidator) {
+        return new OrderService(contextService,
+                orderRepository,
+                orderMapper,
+                restaurantRepository,
+                repositoryRepository,
+                userRepository,
+                orderValidator);
+    }
+
+    @Bean
+    public OrderValidator orderValidator(ContextService contextService,OrderRepository orderRepository) {
         return new OrderValidator(contextService, orderRepository);
     }
+
     @Bean
-    public OrderMapper orderMapper() {
+    public OrderMapper orderMapper(RepositoryRepository repositoryRepository,RestaurantRepository restaurantRepository,UserRepository userRepository) {
         return new OrderMapper(repositoryRepository, restaurantRepository, userRepository);
     }
 }

@@ -1,6 +1,7 @@
 package com.restaurantApp.test.Order;
 
 import com.restaurantApp.test.auth.ContextService;
+import com.restaurantApp.test.repository.Repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,32 +10,18 @@ import java.util.List;
 public class OrderValidator {
     ContextService contextService;
     OrderRepository orderRepository;
-    public void modifyCancelOrder(OrderDto orderDto, Integer userId){
-        if (!orderRepository.existsById(orderDto.getId())) {
-            throw new IllegalArgumentException("Order nie istnieje");
-        }
-        contextService.validateDeleteOrder(orderDto);
+    public void validateOrderContext(Order order, Integer userId){
         contextService.validateUserId(userId);
-        contextService.validateRepositoryId(orderDto.getRepositoryId());
-        contextService.validateRestaurantId(orderDto.getRestaurantId());
+        contextService.validateOrderStateIsOperable(order);
+        contextService.validateRepositoryId(order.getRepository().getId());
+        contextService.validateRestaurantId(order.getRestaurant().getId());
     }
-    public void modifyOrderValidator(OrderDto orderDto, Integer userId){
-        if (!orderRepository.existsById(orderDto.getId())) {
-            throw new IllegalArgumentException("Order nie istnieje");
-        }
-        contextService.validateUserId(userId);
-        contextService.validateOrderStatus(orderDto);
-        contextService.validateRepositoryId(orderDto.getRepositoryId());
-    }
-    public void getOrdersListValidator(List<Integer> restaurantIds, List<Integer> repositoryIds, Integer userId){
+    public void ValidateGetOrdersList(List<Integer> restaurantIds, List<Integer> repositoryIds, Integer userId){
         contextService.validateUserId(userId);
         contextService.validateRestaurantIdList(restaurantIds);
         contextService.validateRepositoryIdList(repositoryIds);
     }
-    public void createOrderValidator(OrderDto orderDto, Integer userId){
-        if (!userId.equals(orderDto.getUserId())) {
-            throw new IllegalArgumentException("User Id is not equals");
-        }
+    public void ValidateCreateOrder(OrderDto orderDto, Integer userId){
         contextService.validateTime(orderDto.getDateToPickUp());
         contextService.validateUserId(userId);
         contextService.validateRepositoryId(orderDto.getRepositoryId());

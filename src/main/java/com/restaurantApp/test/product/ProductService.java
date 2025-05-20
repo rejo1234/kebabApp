@@ -4,6 +4,7 @@ import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,17 +24,18 @@ public class ProductService {
         }
         productRepository.deleteById(productId);
     }
-
-    public void updateProduct(ProductDto productDto, Integer userId) {
+    public void updateProduct(ProductDto productDto,Integer productId, Integer repositoryId, Integer userId) {
+        Repository repository = repositoryRepository.findById(repositoryId)
+                .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
         authenticationContextService.validateUserId(userId);
-        //ifem
-        authenticationContextService.validateRepositoryId(productDto.getRepositoryId());
-        authenticationContextService.validateProductIdBelongsToRepository(productDto.getId());
-        if (!productRepository.existsById(productDto.getId())) {
-            throw new IllegalArgumentException("Produckt nie istnieje");
-        }
+        authenticationContextService.validateRepositoryId(repository.getId());
+        authenticationContextService.validateProductIdBelongsToRepository(productId);
         var prod = productMapper.dtoToProduct(productDto);
         productRepository.save(prod);
+//                authenticationContextService.validateUserId(userId);
+//        authenticationContextService.validateRepositoryId(repositoryDto.getId());
+//        var repository = repositoryMapper.dtoToRepository(repositoryDto);
+//        repositoryRepository.save(repository);
     }
 
     public Product findProduct(String name, Integer userId) {

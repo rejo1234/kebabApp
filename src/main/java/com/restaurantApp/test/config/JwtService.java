@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Service
 public class JwtService {
     private static final String SECRET_KEY = "Ymg3eTE4ZXh3eWRxMGJ2YTNudHpxZnkycGV6MXYyZWQwcHlmZmkzcXk0aW54bHdnbHBnd3lmdGN5amt5MzZnbzhyeTRxMWI1cXYzN3p3azZwZG51dmRiNG5mNXVxM2c0N3Q1NXluZDhhOTQwZzlkb3psM3dnNTl6ZHJuaWVoOXE=";
 

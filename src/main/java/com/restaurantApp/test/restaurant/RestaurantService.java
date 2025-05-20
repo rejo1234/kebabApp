@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @AllArgsConstructor
 public class RestaurantService {
     private final RepositoryRepository repositoryRepository;
@@ -68,12 +67,11 @@ public class RestaurantService {
     }
 
     public void updateRestaurant(RestaurantDto restaurantDto, Integer restaurantId, Integer userId) {
-        if (restaurantDto.getId().equals(restaurantId)){
+        if (!restaurantDto.getId().equals(restaurantId)){
             throw new IllegalArgumentException("error idrestaurant is not equals");
         }
         authenticationContextService.validateUserId(userId);
         authenticationContextService.validateRestaurantId(restaurantId);
-        authenticationContextService.validateRestaurantId(restaurantDto.getId());
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("Restauracja nie istnieje");
         }

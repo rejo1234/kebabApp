@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 @AllArgsConstructor
 public class RepositoryService {
     private final RepositoryRepository repositoryRepository;
@@ -44,7 +43,6 @@ public class RepositoryService {
 
     public void deleteRepository(Integer repositoryId, Integer userId) {
         authenticationContextService.validateUserId(userId);
-        authenticationContextService.validateRepositoryId(repositoryId);
         if (!repositoryRepository.existsById(repositoryId)) {
             throw new IllegalArgumentException("Repository nie istnieje");
         }

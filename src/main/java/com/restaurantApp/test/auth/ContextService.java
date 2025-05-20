@@ -1,8 +1,10 @@
 package com.restaurantApp.test.auth;
 
+import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.Order.OrderDto;
 import com.restaurantApp.test.Order.OrderState;
 import com.restaurantApp.test.product.Product;
+import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.Restaurant;
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.List;
 public class ContextService {
     UserRepository userRepository;
     RepositoryRepository repositoryRepository;
+    ProductRepository productRepository;
     public void validateRepositoryIdList(List<Integer> repositoryIdList) {
         List<Integer> repositoryIdsList = getCurrentUser().getRepositoryList().stream()
                 .map(Repository::getId)
@@ -56,16 +60,9 @@ public class ContextService {
             throw new AccessDeniedException("Godzina jest bledna");
         }
     }
-    public void validateOrderStatus(OrderDto orderDto) {
-        if (orderDto.getOrderState() == OrderState.APPROVED || orderDto.getOrderState() == OrderState.REJECTED) {
+    public void validateOrderStateIsOperable(Order order) {
+        if (order.getOrderState() == OrderState.APPROVED || order.getOrderState() == OrderState.REJECTED) {
             System.out.println("Nie mozesz zmodyfikować zamowienia");
-            throw new AccessDeniedException("status jest bledny");
-        }
-    }
-
-    public void validateDeleteOrder(OrderDto orderDto) {
-        if (orderDto.getOrderState() == OrderState.APPROVED || orderDto.getOrderState() == OrderState.REJECTED) {
-            System.out.println("Nie mozesz usunac zamowienia");
             throw new AccessDeniedException("status jest bledny");
         }
     }
@@ -114,7 +111,6 @@ public class ContextService {
             throw new AccessDeniedException("tutaj chcialem print ale nie leci w logach idk czemu");
         }
     }
-
     public void validateRepositoryId(Integer repositoryId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
@@ -142,18 +138,19 @@ public class ContextService {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }
-
     public void validateProductIdBelongsToRepository(Integer productId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var principal = authentication.getPrincipal();
         User currentUser = (User) principal;
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("restaurant nie istnieje"));
+        Repository repository = product.getRepository();
 
-        List<Integer> productIdList = currentUser.getRepositoryList().stream()
-                .flatMap(repository -> repository.getProductList().stream())
-                .map(Product::getId)
-                .toList();
+        boolean allowed = currentUser.getRepositoryList().stream()
+                .map(Repository::getId)
+                .anyMatch(id -> id.equals(repository.getId()));
 
-        if (!productIdList.contains(productId)) {
+        if (!allowed) {
             throw new AccessDeniedException("Brak uprawnień do aktualizacji tego produktu");
         }
     }
