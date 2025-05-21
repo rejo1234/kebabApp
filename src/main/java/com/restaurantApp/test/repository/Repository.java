@@ -9,7 +9,8 @@ import com.restaurantApp.test.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter

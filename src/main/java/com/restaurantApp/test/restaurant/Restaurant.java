@@ -5,13 +5,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;

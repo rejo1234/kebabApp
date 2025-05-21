@@ -44,11 +44,11 @@ public class RepositoryController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<Void> updateRepository(
-            @RequestBody CreateRepositoryRequest createRepositoryRequest, @RequestParam Integer userId
+    @PatchMapping("/modify")
+    public ResponseEntity<Void> modifyRepository(
+            @RequestBody ModifyRepositoryRequest modifyRepositoryRequest, @RequestParam Integer userId
     ) {
-        repositoryService.updateRepository(createRepositoryRequest.getRepositoryDto(), userId);
+        repositoryService.modifyRepository(modifyRepositoryRequest.getRepositoryDto(), userId);
         return ResponseEntity.ok().build();
     }
 

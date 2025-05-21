@@ -22,15 +22,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class ApplicationConfig {
     private final UserRepository userRepository;
+
     @Bean
-    public JwtService jwtService(){
+    public JwtService jwtService() {
         return new JwtService();
     }
+
     @Bean
     public CommandLineRunner createDatesAtStartRunner(RestaurantRepository restaurantRepository,
-    RepositoryRepository repositoryRepository,
-    ProductRepository productRepository,
-    PasswordEncoder passwordEncoder) {
+                                                      RepositoryRepository repositoryRepository,
+                                                      ProductRepository productRepository,
+                                                      PasswordEncoder passwordEncoder) {
         return new CreateDatesAtStartApplication(
                 userRepository,
                 restaurantRepository,
@@ -39,6 +41,7 @@ public class ApplicationConfig {
                 passwordEncoder
         );
     }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)

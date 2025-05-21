@@ -1,19 +1,20 @@
 package com.restaurantApp.test.repository;
 
-import com.restaurantApp.test.Order.OrderMapper;
-import com.restaurantApp.test.Order.OrderRepository;
-import com.restaurantApp.test.Order.OrderService;
-import com.restaurantApp.test.Order.OrderValidator;
 import com.restaurantApp.test.auth.ContextService;
 import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
+import com.restaurantApp.test.restaurant.RestaurantValidator;
 import com.restaurantApp.test.user.UserRepository;
-import lombok.AllArgsConstructor;
+import com.restaurantApp.test.user.UserValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RepositoryConfig {
+    @Bean
+    public RepositoryValidator repositoryValidator(ContextService contextService) {
+        return new RepositoryValidator(contextService);
+    }
 
     @Bean
     public RepositoryService repositoryService(
@@ -21,15 +22,20 @@ public class RepositoryConfig {
             RestaurantRepository restaurantRepository,
             ProductRepository productRepository,
             RepositoryMapper repositoryMapper,
-            ContextService authenticationContextService,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            RestaurantValidator restaurantValidator,
+            UserValidator userValidator,
+            RepositoryValidator repositoryValidator) {
         return new RepositoryService(repositoryRepository,
                 restaurantRepository,
                 productRepository,
                 repositoryMapper,
-                authenticationContextService,
-                userRepository);
+                userRepository,
+                restaurantValidator,
+                userValidator,
+                repositoryValidator);
     }
+
     @Bean
     public RepositoryMapper repositoryMapper(
             UserRepository userRepository,

@@ -51,9 +51,10 @@ public class User implements UserDetails {
     @JsonBackReference(value = "user-repository")
     private List<Repository> repositoryList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     @JsonBackReference(value = "user-order")
     private List<Order> orderList = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

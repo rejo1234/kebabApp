@@ -5,7 +5,6 @@ import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
 import com.restaurantApp.test.user.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +27,7 @@ public class AuthenticateConfig {
             UserRepository userRepository,
             RepositoryRepository repositoryRepository,
             ProductRepository productRepository) {
-        return new ContextService(userRepository, repositoryRepository,  productRepository);
+        return new ContextService(userRepository, repositoryRepository, productRepository);
     }
 
     @Bean

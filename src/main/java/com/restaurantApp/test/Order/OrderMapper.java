@@ -1,6 +1,5 @@
 package com.restaurantApp.test.Order;
 
-import com.restaurantApp.test.auth.UserDto;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.Restaurant;
@@ -15,9 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 
 public class OrderMapper {
-    RepositoryRepository repositoryRepository;
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
+    private final RepositoryRepository repositoryRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
     public Order dtoToOrderForCreate(OrderDto orderDto) {
         Repository repository = repositoryRepository.findById(orderDto.getRepositoryId())

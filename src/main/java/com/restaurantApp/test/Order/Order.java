@@ -11,8 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+
 @NoArgsConstructor
 @Entity
 @Data
@@ -55,6 +55,7 @@ public class Order {
     private void assignOrderName() {
         this.orderName = "zamówienie " + this.id;
     }
+
     @Override
     public String toString() {
         return "Order{" +
