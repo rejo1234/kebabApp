@@ -11,12 +11,15 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 @AllArgsConstructor
 public class ProductController {
-    private ProductService productService;
+    private final ProductService productService;
 
-    @PatchMapping("/update")
-    public ResponseEntity<Void> updateProduct(
-            @RequestBody CreateProductRequest createProductRequest, @RequestParam Integer userId) {
-        productService.updateProduct(createProductRequest.getProductDto(), userId);
+    @PatchMapping("/modify")
+    public ResponseEntity<Void> modifyProduct(
+            @RequestBody ModifyProductRequest modifyProductRequest,
+            @RequestParam Integer productId,
+            @RequestParam Integer repositoryId,
+            @RequestParam Integer userId) {
+        productService.modifyProduct(modifyProductRequest.getProductDto(), productId, repositoryId, userId);
         return ResponseEntity.ok().build();
     }
 

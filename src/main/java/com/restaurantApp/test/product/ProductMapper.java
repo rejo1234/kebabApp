@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ProductMapper {
-    RepositoryRepository repositoryRepository;
+    private final RepositoryRepository repositoryRepository;
 
     public Product dtoToProduct(ProductDto productDto) {
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())

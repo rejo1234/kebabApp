@@ -1,6 +1,5 @@
 package com.restaurantApp.test.Order;
 
-import com.restaurantApp.test.auth.UserDto;
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.Restaurant;
@@ -15,11 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 
 public class OrderMapper {
-    RepositoryRepository repositoryRepository;
-    RestaurantRepository restaurantRepository;
-    UserRepository userRepository;
+    private final RepositoryRepository repositoryRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
-    public Order dtoToOrder(OrderDto orderDto) {
+    public Order dtoToOrderForCreate(OrderDto orderDto) {
         Repository repository = repositoryRepository.findById(orderDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
         Restaurant restaurant = restaurantRepository.findById(orderDto.getRestaurantId())
@@ -40,9 +39,9 @@ public class OrderMapper {
                 .build();
     }
 
-    public List<OrderDto> convertOrderListToDtoList(List<Order> orders) {
+    public List<OrderDto> ordersToDtos(List<Order> orders) {
         return orders.stream()
-                .map(this::orderToDto)// zakładam, że masz taką metodę
+                .map(this::orderToDto)
                 .toList();
     }
 

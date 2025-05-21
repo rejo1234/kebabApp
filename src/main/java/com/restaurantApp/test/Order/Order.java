@@ -11,8 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+
 @NoArgsConstructor
 @Entity
 @Data
@@ -29,7 +29,7 @@ public class Order {
     private String spaceForComment;
     private LocalDateTime dateOfCreate;
     private LocalDateTime dateToPickUp;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection()
     @CollectionTable(
             name = "orders_products",
             joinColumns = @JoinColumn(name = "orders_id")
@@ -55,6 +55,7 @@ public class Order {
     private void assignOrderName() {
         this.orderName = "zamówienie " + this.id;
     }
+
     @Override
     public String toString() {
         return "Order{" +

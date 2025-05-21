@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 
 public class RepositoryMapper {
-    UserRepository userRepository;
-    ProductRepository productRepository;
-    RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public Repository dtoToRepository(RepositoryDto repositoryDto) {
         List<Restaurant> restaurantList = restaurantRepository.findAllById(repositoryDto.getRestaurantListId());
