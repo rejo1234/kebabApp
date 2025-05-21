@@ -1,14 +1,9 @@
 package com.restaurantApp.test.auth;
 
-import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryRepository;
-import com.restaurantApp.test.restaurant.Restaurant;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
 import com.restaurantApp.test.user.User;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @AllArgsConstructor
 public class UserMapper {

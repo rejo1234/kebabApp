@@ -2,13 +2,15 @@ package com.restaurantApp.test.repository;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.restaurantApp.test.Order.Order;
 import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.restaurant.Restaurant;
 import com.restaurantApp.test.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,11 +29,15 @@ public class Repository {
     @JsonManagedReference(value = "user-repository")
     private List<User> userList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "repository", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "repository")
     @JsonBackReference(value = "repository-product")
     private List<Product> productList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "repositoryList")
-    @JsonManagedReference(value = "restaurant-repository")
+    @JsonBackReference(value = "restaurant-repository")
     private List<Restaurant> restaurantList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "repository")
+    @JsonBackReference(value = "repository-order")
+    private List<Order> orderList = new ArrayList<>();
 }

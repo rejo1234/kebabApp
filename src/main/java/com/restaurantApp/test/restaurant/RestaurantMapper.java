@@ -10,9 +10,8 @@ import java.util.List;
 
 @AllArgsConstructor
 public class RestaurantMapper {
-
-    UserRepository userRepository;
-    RepositoryRepository repositoryRepository;
+    private final UserRepository userRepository;
+    private final RepositoryRepository repositoryRepository;
 
 
     public Restaurant dtoToRestaurant(RestaurantDto restaurantDto) {

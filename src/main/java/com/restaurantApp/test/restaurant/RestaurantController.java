@@ -1,6 +1,6 @@
 package com.restaurantApp.test.restaurant;
 
-import com.restaurantApp.test.repository.RepositoryService;
+import com.restaurantApp.test.repository.ModifyRepositoryRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;
-    private final RepositoryService repositoryService;
 
     @PatchMapping("/delete-connection-with-repository")
     public ResponseEntity<Void> deleteConnectionRestaurantAndRepository(
@@ -38,12 +37,12 @@ public class RestaurantController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<Void> updateRestaurant(
-            @RequestBody CreateRestaurantRequest createRestaurantRequest, @RequestParam Integer restaurantId
+    @PatchMapping("/modify")
+    public ResponseEntity<Void> modifyRestaurant(
+            @RequestBody ModifyRestaurantRequest modifyRestaurantRequest, @RequestParam Integer restaurantId
             , @RequestParam Integer userId
     ) {
-        restaurantService.updateRestaurant(createRestaurantRequest.getRestaurantDto(), restaurantId, userId);
+        restaurantService.modifyRestaurant(modifyRestaurantRequest.getRestaurantDto(), restaurantId, userId);
         return ResponseEntity.ok().build();
     }
 

@@ -1,6 +1,5 @@
-package com.restaurantApp.test.product;
+package com.restaurantApp.test.Order;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProductRequest {
-    @Valid
-    private ProductDto productDto;
+public class CreateOrderRequest {
+    private OrderDto orderDto;
 }

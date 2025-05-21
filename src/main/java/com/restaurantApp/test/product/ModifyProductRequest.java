@@ -1,16 +1,13 @@
 package com.restaurantApp.test.product;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
-public class CreateProductRequest {
-    @Valid
-    private ProductDto productDto;
+public class ModifyProductRequest extends CreateProductRequest{
 }

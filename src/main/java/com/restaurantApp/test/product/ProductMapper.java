@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ProductMapper {
-    RepositoryRepository repositoryRepository;
+    private final RepositoryRepository repositoryRepository;
 
     public Product dtoToProduct(ProductDto productDto) {
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
@@ -22,12 +22,12 @@ public class ProductMapper {
     }
 
     public ProductDto productToDto(Product product) {
-        Integer idRepository = product.getRepository().getId();
+        Integer repositoryId = product.getRepository().getId();
 
         return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
-                .repositoryId(idRepository)
+                .repositoryId(repositoryId)
                 .build();
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(
             @RequestParam int userId
@@ -19,11 +18,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<Void> updateUser(
-            @RequestBody CreateUserRequest createUserRequest, @RequestParam Integer userId
+    @PatchMapping("/modify")
+    public ResponseEntity<Void> modifyUser(
+            @RequestBody ModifyUserRequest modifyUserRequest, @RequestParam Integer userId
     ) {
-        userService.updateUser(createUserRequest, userId);
+        userService.modifyUser(modifyUserRequest, userId);
         return ResponseEntity.ok().build();
     }
 
