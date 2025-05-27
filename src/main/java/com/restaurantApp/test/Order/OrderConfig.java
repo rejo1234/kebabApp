@@ -14,6 +14,11 @@ import org.springframework.context.annotation.Configuration;
 public class OrderConfig {
 
     @Bean
+    public OrderFilter orderFilter() {
+        return new OrderFilter();
+    }
+
+    @Bean
     public OrderValidator orderValidator(
             RepositoryValidator repositoryValidator,
             RestaurantValidator restaurantValidator,
@@ -26,11 +31,13 @@ public class OrderConfig {
             ContextService contextService,
             OrderRepository orderRepository,
             OrderMapper orderMapper,
-            OrderValidator orderValidator) {
+            OrderValidator orderValidator,
+            OrderFilter orderFilter) {
         return new OrderService(contextService,
                 orderRepository,
                 orderMapper,
-                orderValidator);
+                orderValidator,
+                orderFilter);
     }
 
 

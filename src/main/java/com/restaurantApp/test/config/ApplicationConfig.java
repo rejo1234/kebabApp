@@ -1,6 +1,6 @@
 package com.restaurantApp.test.config;
 
-import com.restaurantApp.test.DatesAtStart.CreateDatesAtStartApplication;
+import com.restaurantApp.test.Init.InitFakeData;
 import com.restaurantApp.test.product.ProductRepository;
 import com.restaurantApp.test.repository.RepositoryRepository;
 import com.restaurantApp.test.restaurant.RestaurantRepository;
@@ -33,7 +33,7 @@ public class ApplicationConfig {
                                                       RepositoryRepository repositoryRepository,
                                                       ProductRepository productRepository,
                                                       PasswordEncoder passwordEncoder) {
-        return new CreateDatesAtStartApplication(
+        return new InitFakeData(
                 userRepository,
                 restaurantRepository,
                 repositoryRepository,

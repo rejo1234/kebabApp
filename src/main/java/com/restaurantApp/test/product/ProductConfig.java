@@ -17,8 +17,8 @@ public class ProductConfig {
     }
 
     @Bean
-    public ProductMapper productMapper(RepositoryRepository repositoryRepository) {
-        return new ProductMapper(repositoryRepository);
+    public ProductMapper productMapper() {
+        return new ProductMapper();
     }
 
     @Bean

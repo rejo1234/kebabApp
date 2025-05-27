@@ -1,18 +1,14 @@
 package com.restaurantApp.test.product;
 
 import com.restaurantApp.test.repository.Repository;
-import com.restaurantApp.test.repository.RepositoryRepository;
 import lombok.AllArgsConstructor;
 
 
 @AllArgsConstructor
 public class ProductMapper {
-    private final RepositoryRepository repositoryRepository;
 
-    public Product dtoToProduct(ProductDto productDto) {
-        Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
-                .orElseThrow(() -> new IllegalArgumentException("repository nie istnieje"));
 
+    public Product dtoToProduct(ProductDto productDto, Repository repository) {
         return Product.builder()
                 .id(productDto.getId())
                 .name(productDto.getName())

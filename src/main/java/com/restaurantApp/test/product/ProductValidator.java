@@ -2,12 +2,8 @@ package com.restaurantApp.test.product;
 
 import com.restaurantApp.test.repository.Repository;
 import com.restaurantApp.test.repository.RepositoryValidator;
-import com.restaurantApp.test.user.User;
 import com.restaurantApp.test.user.UserValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @AllArgsConstructor
 public class ProductValidator {

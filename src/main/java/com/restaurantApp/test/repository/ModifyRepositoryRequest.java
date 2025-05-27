@@ -9,5 +9,5 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-public class ModifyRepositoryRequest extends CreateRepositoryRequest{
+public class ModifyRepositoryRequest extends CreateRepositoryRequest {
 }

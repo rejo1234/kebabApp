@@ -1,4 +1,4 @@
-package com.restaurantApp.test.DatesAtStart;
+package com.restaurantApp.test.Init;
 
 import com.restaurantApp.test.product.Product;
 import com.restaurantApp.test.product.ProductRepository;
@@ -14,7 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @AllArgsConstructor
-public class CreateDatesAtStartApplication implements CommandLineRunner {
+public class InitFakeData implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final RepositoryRepository repositoryRepository;
@@ -90,7 +90,7 @@ public class CreateDatesAtStartApplication implements CommandLineRunner {
                 null
         );
         repositoryRepository.save(repository);
-       repositoryRepository.save(repository2);
+        repositoryRepository.save(repository2);
         Product product = new Product(
                 null,
                 "meat",

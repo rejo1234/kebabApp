@@ -26,9 +26,12 @@ public class ProductService {
         productValidator.validateProductIdBelongsToRepository(productId);
         productRepository.deleteById(productId);
     }
-    public void modifyProduct(ProductDto productDto,Integer productId, Integer repositoryId, Integer userId) {
+
+    public void modifyProduct(ProductDto productDto, Integer productId, Integer repositoryId, Integer userId) {
         productValidator.validateModifyProduct(productDto, productId, repositoryId, userId);
-        var prod = productMapper.dtoToProduct(productDto);
+        Repository repository = repositoryRepository.findById(repositoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Repository nie istnieje"));
+        var prod = productMapper.dtoToProduct(productDto, repository);
         productRepository.save(prod);
     }
 
@@ -42,7 +45,7 @@ public class ProductService {
         repositoryValidator.validateRepositoryId(productDto.getRepositoryId());
         Repository repository = repositoryRepository.findById(productDto.getRepositoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Repository nie istnieje"));
-        var product = productMapper.dtoToProduct(productDto);
+        var product = productMapper.dtoToProduct(productDto, repository);
         repository.getProductList().add(product);
         productRepository.save(product);
     }
