@@ -19,7 +19,7 @@ public class OrderDto {
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
     private String orderName;
-    private String spaceForComment;
+    private String comment;
     private LocalDateTime dateOfCreate;
     private LocalDateTime dateToPickUp;
     private Integer repositoryId;

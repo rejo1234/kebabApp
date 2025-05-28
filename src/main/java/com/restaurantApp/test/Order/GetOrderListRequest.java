@@ -14,12 +14,12 @@ public class GetOrderListRequest {
     private final List<Integer> repositoryIdList;
     private final List<Integer> restaurantIdList;
     private final OrderState orderState;
-    private final LocalDate createTimeStart;
-    private final LocalDate createTimeEnd;
-    private final LocalDate dateToPickUpStart;
-    private final LocalDate dateToPickUpEnd;
+    private final LocalDate createDateFrom;
+    private final LocalDate createDateTo;
+    private final LocalDate pickUpDateFrom;
+    private final LocalDate pickUpDateTo;
     private final String orderName;
-    private final String spaceForComment;
+    private final String comment;
     private final String productName;
-    private final Integer productAmount;
+    private final Double productAmount;
 }

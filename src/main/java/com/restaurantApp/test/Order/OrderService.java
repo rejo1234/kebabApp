@@ -13,7 +13,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final OrderValidator orderValidator;
-    private final OrderFilter orderFilter;
 
 
     public void cancelOrder(Integer orderId, Integer userId) {
@@ -46,45 +45,21 @@ public class OrderService {
     }
 
 
-    public List<OrderDto> getOrdersList(
-            List<Integer> restaurantIds,
-            List<Integer> repositoryIds,
-            OrderState orderState,
-            LocalDate createTimeStart,
-            LocalDate createTimeEnd,
-            LocalDate dateToPickUpStart,
-            LocalDate dateToPickUpEnd,
-            String orderName,
-            String spaceForComment,
-            String productName,
-            Integer productAmount,
-            Integer userId) {
-        orderValidator.validateFullContext(restaurantIds, repositoryIds, userId);
-        List<Integer> repoIdList = CollectionUtils.isEmpty(repositoryIds) ? contextService.getUserRepositoryIds() : repositoryIds;
-        List<Integer> restaurantIdList = CollectionUtils.isEmpty(restaurantIds) ? contextService.getUserRestaurantIds() : restaurantIds;
-        List<Order> orderList = orderRepository.findAll(orderFilter.buildFilter(
-                restaurantIdList,
-                repoIdList,
-                orderState,
-                createTimeStart,
-                createTimeEnd,
-                dateToPickUpStart,
-                dateToPickUpEnd,
-                orderName,
-                spaceForComment,
-                productName,
-                productAmount,
-                userId));
+    public List<OrderDto> getOrdersList(SearchParam searchParam) {
+        orderValidator.validateFullContext(searchParam.restaurantIds, searchParam.repositoryIds, searchParam.userId);
+        List<Integer> repoIdList = CollectionUtils.isEmpty(searchParam.repositoryIds) ? contextService.getUserRepositoryIds() : searchParam.repositoryIds;
+        List<Integer> restaurantIdList = CollectionUtils.isEmpty(searchParam.restaurantIds) ? contextService.getUserRestaurantIds() : searchParam.restaurantIds;
+        List<Order> orderList = orderRepository.findAll(OrderFilter.buildFilter(searchParam, restaurantIdList, repoIdList));
         return orderList.stream()
                 .map(orderMapper::orderToDto)
                 .toList();
     }
 
-    public List<OrderDto> getOrdersList2(SearchParam searchParam, Integer userId) {
-        orderValidator.validateFullContext(searchParam.getGetOrderListRequest().getRepositoryIdList(), searchParam.getGetOrderListRequest().getRepositoryIdList(), userId);
-        List<Integer> repoIdList = CollectionUtils.isEmpty(searchParam.getGetOrderListRequest().getRepositoryIdList()) ? contextService.getUserRepositoryIds() : searchParam.getGetOrderListRequest().getRepositoryIdList();
-        List<Integer> restaurantIdList = CollectionUtils.isEmpty(searchParam.getGetOrderListRequest().getRestaurantIdList()) ? contextService.getUserRestaurantIds() : searchParam.getGetOrderListRequest().getRestaurantIdList();
-        List<Order> orderList = orderRepository.getOrderListRequest2(searchParam, repoIdList, restaurantIdList, userId);
+    public List<OrderDto> getOrdersList2(SearchParam2 searchParam2, Integer userId) {
+        orderValidator.validateFullContext(searchParam2.getGetOrderListRequest().getRepositoryIdList(), searchParam2.getGetOrderListRequest().getRepositoryIdList(), userId);
+        List<Integer> repoIdList = CollectionUtils.isEmpty(searchParam2.getGetOrderListRequest().getRepositoryIdList()) ? contextService.getUserRepositoryIds() : searchParam2.getGetOrderListRequest().getRepositoryIdList();
+        List<Integer> restaurantIdList = CollectionUtils.isEmpty(searchParam2.getGetOrderListRequest().getRestaurantIdList()) ? contextService.getUserRestaurantIds() : searchParam2.getGetOrderListRequest().getRestaurantIdList();
+        List<Order> orderList = orderRepository.getOrderListRequest2(searchParam2, repoIdList, restaurantIdList, userId);
 
         return orderList.stream()
                 .map(orderMapper::orderToDto)

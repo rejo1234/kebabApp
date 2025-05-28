@@ -26,7 +26,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState orderState;
     private String orderName;
-    private String spaceForComment;
+    private String comment;
     private LocalDateTime dateOfCreate;
     private LocalDateTime dateToPickUp;
     @ElementCollection()
@@ -62,7 +62,7 @@ public class Order {
                 "id=" + id +
                 ", orderState=" + orderState +
                 ", orderName='" + orderName + '\'' +
-                ", spaceForComment='" + spaceForComment + '\'' +
+                ", comment='" + comment + '\'' +
                 ", dateOfCreate=" + dateOfCreate +
                 ", dateToPickUp=" + dateToPickUp +
                 ", repositoryId=" + repository.getId() +

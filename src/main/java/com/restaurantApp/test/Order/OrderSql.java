@@ -1,7 +1,7 @@
 package com.restaurantApp.test.Order;
 
 public class OrderSql {
-    public static final String BASE_QUERY = "SELECT o FROM Order o WHERE 1=1";
+    public static final String BASE_QUERY = "SELECT o FROM Order o WHERE o.id IS NOT NULL";
     public static final String REPO_ID_LIST_PARAM = "repositoryIdList";
     public static final String REPO_ID_LIST_QUERY = " AND o.repository.id IN (:" + REPO_ID_LIST_PARAM + ")";
     public static final String RESTAURANT_ID_LIST_PARAM = "restaurantIdList";
@@ -23,7 +23,7 @@ public class OrderSql {
     public static final String SEARCH_TEXT_PARAM = "searchText";
     public static final String ORDER_NAME_OR_COMMENT_FILTER_QUERY =
             " AND (LOWER(o.orderName) LIKE LOWER(CONCAT('%', :" + SEARCH_TEXT_PARAM + ", '%')) " +
-                    "OR LOWER(o.spaceForComment) LIKE LOWER(CONCAT('%', :" + SEARCH_TEXT_PARAM + ", '%')))";
+                    "OR LOWER(o.comment) LIKE LOWER(CONCAT('%', :" + SEARCH_TEXT_PARAM + ", '%')))";
     public static final String PRODUCT_DTO_LIST_FILTER_JOIN =
             " JOIN o.orderProductDtoList p ";
     public static final String SEARCH_PRODUCT_NAME_PARAM = "searchProductName";

@@ -11,19 +11,7 @@ import java.util.List;
 
 public class OrderFilter {
 
-    public Specification<Order> buildFilter(
-            List<Integer> restaurantIds,
-            List<Integer> repositoryIds,
-            OrderState orderState,
-            LocalDate createTimeStart,
-            LocalDate createTimeEnd,
-            LocalDate dateToPickUpStart,
-            LocalDate dateToPickUpEnd,
-            String orderName,
-            String spaceForComment,
-            String productName,
-            Integer productAmount,
-            Integer userId) {
+    public static Specification<Order> buildFilter(SearchParam searchParam,List<Integer> restaurantIds, List<Integer> repositoryIds) {
 
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -34,37 +22,37 @@ public class OrderFilter {
             if (repositoryIds != null && !repositoryIds.isEmpty()) {
                 predicates.add(root.get("repository").get("id").in(repositoryIds));
             }
-            if (userId != null) {
-                predicates.add(cb.equal(root.get("user").get("id"), userId));
+            if (searchParam.userId != null) {
+                predicates.add(cb.equal(root.get("user").get("id"), searchParam.userId));
             }
-            if (orderState != null) {
-                predicates.add(cb.equal(root.get("orderState"), orderState));
+            if (searchParam.orderState != null) {
+                predicates.add(cb.equal(root.get("orderState"), searchParam.orderState));
             }
-            if (createTimeStart != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("dateOfCreate"), createTimeStart));
+            if (searchParam.createTimeStart != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("dateOfCreate"), searchParam.createTimeStart));
             }
-            if (createTimeEnd != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("dateOfCreate"), createTimeEnd));
+            if (searchParam.createTimeEnd != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("dateOfCreate"), searchParam.createTimeEnd));
             }
-            if (dateToPickUpStart != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("dateToPickUp"), dateToPickUpStart));
+            if (searchParam.dateToPickUpStart != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("dateToPickUp"), searchParam.dateToPickUpStart));
             }
-            if (dateToPickUpEnd != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("dateToPickUp"), dateToPickUpEnd));
+            if (searchParam.dateToPickUpEnd != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("dateToPickUp"), searchParam.dateToPickUpEnd));
             }
-            if (orderName != null && !orderName.isBlank()) {
-                predicates.add(cb.like(cb.lower(root.get("orderName")), "%" + orderName.toLowerCase() + "%"));
+            if (searchParam.orderName != null && !searchParam.orderName.isBlank()) {
+                predicates.add(cb.like(cb.lower(root.get("orderName")), "%" + searchParam.orderName.toLowerCase() + "%"));
             }
-            if (spaceForComment != null && !spaceForComment.isBlank()) {
-                predicates.add(cb.like(cb.lower(root.get("spaceForComment")), "%" + spaceForComment.toLowerCase() + "%"));
+            if (searchParam.comment != null && !searchParam.comment.isBlank()) {
+                predicates.add(cb.like(cb.lower(root.get("comment")), "%" + searchParam.comment.toLowerCase() + "%"));
             }
-            if (productName != null && !productName.isBlank()) {
+            if (searchParam.productName != null && !searchParam.productName.isBlank()) {
                 Join<Object, Object> products = root.join("orderProductDtoList", JoinType.LEFT);
-                predicates.add(cb.like(cb.lower(products.get("name")), "%" + productName.toLowerCase() + "%"));
+                predicates.add(cb.like(cb.lower(products.get("name")), "%" + searchParam.productName.toLowerCase() + "%"));
             }
-            if (productAmount != null) {
+            if (searchParam.productAmount != null) {
                 Join<Object, Object> products = root.join("orderProductDtoList", JoinType.LEFT);
-                predicates.add(cb.equal(products.get("amount"), productAmount));
+                predicates.add(cb.equal(products.get("amount"), searchParam.productAmount));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

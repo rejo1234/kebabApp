@@ -44,27 +44,15 @@ public class OrderController {
 
     @PostMapping("/get-list")
     public ResponseEntity<List<OrderDto>> getOrderList(
-            @RequestBody GetOrderListRequest getOrderListRequest, @RequestParam Integer userId
-    ) {
-        return ResponseEntity.ok(orderService.getOrdersList(
-                getOrderListRequest.getRestaurantIdList(),
-                getOrderListRequest.getRepositoryIdList(),
-                getOrderListRequest.getOrderState(),
-                getOrderListRequest.getCreateTimeStart(),
-                getOrderListRequest.getCreateTimeEnd(),
-                getOrderListRequest.getDateToPickUpStart(),
-                getOrderListRequest.getDateToPickUpEnd(),
-                getOrderListRequest.getOrderName(),
-                getOrderListRequest.getSpaceForComment(),
-                getOrderListRequest.getProductName(),
-                getOrderListRequest.getProductAmount(),
-                userId));
-    }    @PostMapping("/get-list2")
-    public ResponseEntity<List<OrderDto>> getOrderList2(
             @RequestBody SearchParam searchParam, @RequestParam Integer userId
     ) {
+        return ResponseEntity.ok(orderService.getOrdersList(searchParam));
+    }    @PostMapping("/get-list2")
+    public ResponseEntity<List<OrderDto>> getOrderList2(
+            @RequestBody SearchParam2 searchParam2, @RequestParam Integer userId
+    ) {
         return ResponseEntity.ok(orderService.getOrdersList2(
-                searchParam,
+                searchParam2,
                 userId));
     }
 }
